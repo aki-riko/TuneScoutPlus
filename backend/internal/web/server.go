@@ -451,6 +451,9 @@ func StartWithOptions(port string, opts StartOptions) {
 	RegisterVideogenRoutes(api, videoDir)
 	RegisterUpdateRoutes(api)
 
+	// TuneScout+ 新增:供 React 前端使用的纯 JSON 接口(/api/v1),与 /music HTMX 路由并存。
+	RegisterJSONAPIRoutes(r)
+
 	listenAddr := opts.ListenHost + ":" + port
 	listener, err := net.Listen("tcp", listenAddr)
 	if err != nil {
