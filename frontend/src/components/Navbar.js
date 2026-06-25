@@ -1,6 +1,6 @@
 import React from 'react';
 
-const sections = ['Home', 'Trending', 'Artists', 'Discover', 'FAQ'];
+const sections = ['Home', 'Trending', 'Artists', 'Discover', 'Download', 'FAQ'];
 
 function Navbar({ onLinkClick, isVisible = true, currentSection }) {
   const shouldShow = isVisible !== false;
@@ -28,7 +28,7 @@ function Navbar({ onLinkClick, isVisible = true, currentSection }) {
             handleLinkClick('Home');
           }}
         >
-          TuneScout
+          TuneScout+
         </a>
         <ul className="flex space-x-10 text-lg">
           {sections.map((item) => (

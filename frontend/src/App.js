@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import Trending from './components/Trending';
 import Artists from './components/Artists';
 import Discover from './components/Discover';
+import Download from './components/Download';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import 'react-toastify/dist/ReactToastify.css';
@@ -129,6 +130,11 @@ function App() {
             {currentSection === 'Discover' && (
               <section id="discover" className="container mx-auto container-padding section-padding">
                 <Discover />
+              </section>
+            )}
+            {currentSection === 'Download' && (
+              <section id="download" className="container mx-auto container-padding section-padding pb-32">
+                <Download />
               </section>
             )}
             {currentSection === 'Artists' && (
