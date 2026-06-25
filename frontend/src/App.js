@@ -71,13 +71,14 @@ function App() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [currentSection, setCurrentSection] = useState('Home');
   const [isPopupOpen, setIsPopupOpen] = useState(true);
-  const [downloadKeyword, setDownloadKeyword] = useState('');
+  const [downloadRequest, setDownloadRequest] = useState({ keyword: '', nonce: 0 });
   const lastScrollYRef = useRef(0);
 
-  // 发现页「在国内源下载」→ 切到下载页并预填搜索词
+  // 发现页「在国内源下载」→ 切到下载页并预填搜索词。
+  // 用递增 nonce 确保即便重复点同一首歌也能再次触发搜索。
   useEffect(() => {
     return onDownloadSearch((keyword) => {
-      setDownloadKeyword(keyword);
+      setDownloadRequest((prev) => ({ keyword, nonce: prev.nonce + 1 }));
       setCurrentSection('Download');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -146,7 +147,7 @@ function App() {
             )}
             {currentSection === 'Download' && (
               <section id="download" className="container mx-auto container-padding section-padding pb-32">
-                <Download initialKeyword={downloadKeyword} />
+                <Download downloadRequest={downloadRequest} />
               </section>
             )}
             {currentSection === 'Settings' && (

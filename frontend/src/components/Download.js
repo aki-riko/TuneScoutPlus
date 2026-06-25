@@ -127,7 +127,7 @@ const PlaylistDetailPane = ({ meta, state, onBack, onPlay, onShowLyric, isPlayin
   );
 };
 
-const Download = ({ initialKeyword = '' }) => {
+const Download = ({ downloadRequest }) => {
   const [tab, setTab] = useState('search');
   const [keyword, setKeyword] = useState('');
   const [query, setQuery] = useState('');
@@ -136,15 +136,18 @@ const Download = ({ initialKeyword = '' }) => {
   const [lyric, setLyric] = useState(null); // {song, text}
   const audioRef = useRef(null);
 
-  // 来自发现页「在国内源下载」的预填搜索词:切到搜索 Tab 并自动搜索
+  // 来自发现页「在国内源下载」的预填搜索词:切到搜索 Tab 并自动搜索。
+  // 依赖 nonce,保证重复点同一首歌也能再次触发。
   useEffect(() => {
-    if (initialKeyword) {
+    const kw = downloadRequest?.keyword;
+    if (kw) {
       setTab('search');
       setOpenPlaylist(null);
-      setKeyword(initialKeyword);
-      setQuery(initialKeyword);
+      setKeyword(kw);
+      setQuery(kw);
     }
-  }, [initialKeyword]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [downloadRequest?.nonce]);
 
   // 歌曲搜索
   const search = useQuery(
