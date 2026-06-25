@@ -132,6 +132,81 @@ func RegisterJSONAPIRoutes(r *gin.Engine) {
 		}
 		c.JSON(200, out)
 	})
+
+	registerLoginAndCookieRoutes(api)
+}
+
+// registerLoginAndCookieRoutes 注册二维码登录与 Cookie 管理(本地自用,无鉴权,
+// 与 configAPI 下需管理员登录的同名能力区分;供前端「设置」面板直接调用)。
+func registerLoginAndCookieRoutes(api *gin.RouterGroup) {
+	// 支持二维码登录的源
+	api.GET("/qr_login/sources", func(c *gin.Context) {
+		c.JSON(200, gin.H{"sources": core.GetQRLoginSourceNames()})
+	})
+
+	// 创建二维码登录会话
+	api.POST("/qr_login/:source", func(c *gin.Context) {
+		source := strings.TrimSpace(c.Param("source"))
+		fn := core.GetQRLoginCreateFunc(source)
+		if fn == nil {
+			c.JSON(404, gin.H{"error": "该源不支持二维码登录"})
+			return
+		}
+		session, err := fn()
+		if err != nil {
+			c.JSON(502, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, session)
+	})
+
+	// 轮询二维码登录状态;成功则保存 cookie
+	api.GET("/qr_login/:source", func(c *gin.Context) {
+		source := strings.TrimSpace(c.Param("source"))
+		key := strings.TrimSpace(c.Query("key"))
+		if key == "" {
+			c.JSON(400, gin.H{"error": "缺少 key"})
+			return
+		}
+		fn := core.GetQRLoginCheckFunc(source)
+		if fn == nil {
+			c.JSON(404, gin.H{"error": "该源不支持二维码登录"})
+			return
+		}
+		result, err := fn(key)
+		if err != nil {
+			c.JSON(502, gin.H{"error": err.Error()})
+			return
+		}
+		if result != nil && result.Status == model.QRLoginStatusSuccess {
+			cookie := qrLoginCookieString(result)
+			if cookie != "" {
+				cookieSource := qrLoginCookieSource(source)
+				result.Cookie = cookie
+				core.CM.SetAll(map[string]string{cookieSource: cookie})
+				core.CM.Save()
+			}
+		}
+		c.JSON(200, result)
+	})
+
+	// 读取已保存的 cookie(仅返回各源是否已登录,不回显 cookie 明文)
+	api.GET("/cookies", func(c *gin.Context) {
+		all := core.CM.GetAll()
+		status := map[string]bool{}
+		for src, v := range all {
+			status[src] = strings.TrimSpace(v) != ""
+		}
+		c.JSON(200, gin.H{"logged_in": status})
+	})
+
+	// 清除某源 cookie(退出登录)。SetAll 对空值执行删除(见 core.CookieManager.SetAll)。
+	api.DELETE("/cookies/:source", func(c *gin.Context) {
+		source := strings.TrimSpace(c.Param("source"))
+		core.CM.SetAll(map[string]string{source: ""})
+		core.CM.Save()
+		c.JSON(200, gin.H{"status": "ok"})
+	})
 }
 
 // jsonSearchSongResult 在 model.Song 基础上附带前端友好的展示字段。

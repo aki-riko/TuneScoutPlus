@@ -81,3 +81,50 @@ export const getDownloadUrl = (song) =>
   `${API_BASE}/music/download?${buildDownloadParams(song, { embed: '1' })}`;
 
 export const apiBase = API_BASE;
+
+// ===== 二维码登录 / Cookie 管理 / 本地音乐 =====
+
+export const getQRSources = async () => {
+  const { data } = await client.get('/api/v1/qr_login/sources');
+  return data.sources || [];
+};
+
+// 创建二维码登录会话 → { source, key, url, image_url }
+export const createQRLogin = async (source) => {
+  const { data } = await client.post(`/api/v1/qr_login/${encodeURIComponent(source)}`);
+  return data;
+};
+
+// 轮询登录状态 → { status, cookie, ... }  status: waiting/scanned/success/expired/failed
+export const checkQRLogin = async (source, key) => {
+  const { data } = await client.get(`/api/v1/qr_login/${encodeURIComponent(source)}?key=${encodeURIComponent(key)}`);
+  return data;
+};
+
+// 各源登录状态 → { logged_in: { netease:true, ... } }
+export const getCookieStatus = async () => {
+  const { data } = await client.get('/api/v1/cookies');
+  return data.logged_in || {};
+};
+
+// 退出某源登录
+export const clearCookie = async (source) => {
+  const { data } = await client.delete(`/api/v1/cookies/${encodeURIComponent(source)}`);
+  return data;
+};
+
+// 本地音乐列表(沿用 /music/local_music)
+export const getLocalMusic = async ({ offset = 0, limit = 100, refresh = false } = {}) => {
+  const params = new URLSearchParams();
+  params.set('offset', offset);
+  params.set('limit', limit);
+  if (refresh) params.set('refresh', '1');
+  const { data } = await client.get(`/music/local_music?${params.toString()}`);
+  return data; // { download_dir, exists, tracks, total, has_more, ... }
+};
+
+// 删除本地音乐
+export const deleteLocalMusic = async (id) => {
+  const { data } = await client.delete(`/music/local_music?id=${encodeURIComponent(id)}`);
+  return data;
+};

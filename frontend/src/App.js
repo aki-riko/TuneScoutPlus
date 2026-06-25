@@ -7,6 +7,7 @@ import Trending from './components/Trending';
 import Artists from './components/Artists';
 import Discover from './components/Discover';
 import Download from './components/Download';
+import Settings from './components/Settings';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import 'react-toastify/dist/ReactToastify.css';
@@ -135,6 +136,11 @@ function App() {
             {currentSection === 'Download' && (
               <section id="download" className="container mx-auto container-padding section-padding pb-32">
                 <Download />
+              </section>
+            )}
+            {currentSection === 'Settings' && (
+              <section id="settings" className="container mx-auto container-padding section-padding">
+                <Settings />
               </section>
             )}
             {currentSection === 'Artists' && (
