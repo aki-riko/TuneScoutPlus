@@ -4,7 +4,7 @@ const BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 const DEFAULT_LIMIT = 50;
 
 const getApiKey = () => {
-  const apiKey = process.env.REACT_APP_LASTFM_API_KEY;
+  const apiKey = import.meta.env.VITE_LASTFM_API_KEY;
 
   if (!apiKey) {
     throw new Error('Missing Last.fm credentials. Please set REACT_APP_LASTFM_API_KEY.');

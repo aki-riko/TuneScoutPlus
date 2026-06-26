@@ -13,7 +13,7 @@ function Hero({ onLinkClick, isPopupOpen }) {
   const SCRATCH_THRESHOLD = 70; 
 
   useEffect(() => {
-    scratchSoundRef.current = new Audio(`${process.env.PUBLIC_URL}/sounds/scratch.mp3`); 
+    scratchSoundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/scratch.mp3`);
     scratchSoundRef.current.load(); 
 
     let lastTime = 0;
@@ -125,7 +125,7 @@ function Hero({ onLinkClick, isPopupOpen }) {
             }}
           >
             <img
-              src={`${process.env.PUBLIC_URL}/images/disc.png`}
+              src={`${import.meta.env.BASE_URL}images/disc.png`}
               alt="Rotating Vinyl Disc"
               className="h-full w-auto select-none pointer-events-none"
               style={{ height: '120%' }}

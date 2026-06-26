@@ -27,7 +27,7 @@ TuneScout+ 把两个开源项目合并为一个统一工具:
 TuneScout+/
 ├── backend/    Go 后端(基于 go-music-dl,Gin + music-lib)
 │   └── internal/web/json_api.go   新增的 /api/v1/* JSON 接口
-└── frontend/   React 前端(基于 TuneScout,CRA + react-query + tailwind)
+└── frontend/   React 前端(基于 TuneScout,Vite + react-query + tailwind)
     └── src/components/Download.js、Settings.js   新增的下载/设置页
 ```
 
@@ -44,12 +44,12 @@ go run ./cmd/music-dl web --port 8080
 
 ```bash
 cd frontend
-cp .env.example .env          # 按需填写 Last.fm/Spotify 密钥(发现页用);REACT_APP_MUSICDL_API 指向后端
+cp .env.example .env          # 按需填写 Last.fm/Spotify 密钥(发现页用);VITE_MUSICDL_API 指向后端
 npm install
-npm start
+npm run dev                   # 开发服务器;打包用 npm run build(产物在 build/)
 ```
 
-发现页(Trending/Discover/Artists)依赖 Last.fm 与 Spotify 凭据,需在 `.env` 中配置 `REACT_APP_LASTFM_API_KEY`、`REACT_APP_SPOTIFY_CLIENT_ID`、`REACT_APP_SPOTIFY_CLIENT_SECRET`;不配置不影响下载页(国内源)使用。
+发现页(Trending/Discover/Artists)依赖 Last.fm 与 Spotify 凭据,需在 `.env` 中配置 `VITE_LASTFM_API_KEY`、`VITE_SPOTIFY_CLIENT_ID`、`VITE_SPOTIFY_CLIENT_SECRET`;不配置不影响下载页(国内源)使用。
 
 ## 接口约定
 
@@ -74,7 +74,7 @@ npm start
 - **SSRF 防护**:封面代理 `/music/cover_proxy` 已拒绝指向内网/环回/云元数据(`169.254.169.254`)的目标,并覆盖十进制/十六进制/IPv6 等绕过写法。注:校验在请求前做 DNS 解析,理论上仍存在 DNS rebinding(TOCTOU)的残余风险;若部署在敏感内网,建议在网络层(防火墙/出网策略)额外限制后端的出站访问。
 - **登录防爆破**:管理员登录失败有次数锁定;密码以 bcrypt 存储。
 - **上传限制**:本地音乐上传仅接受音频扩展名白名单,文件名经清洗防路径穿越。
-- **前端构建依赖告警**:`npm audit` 会报若干来自 `react-scripts`(CRA 5,已停止维护)的告警,这些是 webpack-dev-server/svgr 等**构建期工具**,不进生产产物。运行时依赖(axios、react 等)已升级到无已知高危漏洞的版本。彻底清除构建期告警需迁移到 Vite 等新构建工具。
+- **前端依赖**:构建工具为 Vite,运行时依赖(axios、react 等)均已升级到无已知高危漏洞的版本,生产 build 产物无 critical/high 漏洞。`npm audit` 仍会报少量来自构建/开发期工具链(vite dev server、tailwind/postcss 的 glob 等)的告警,这些**不进生产产物**,且多为 dev-only(仅 `npm run dev` 期间)。
 - **ffmpeg**:视频生成等功能依赖系统 ffmpeg;exec 调用均使用参数数组,无 shell 注入。
 
 发现安全问题请提 issue 或私下联系维护者。
