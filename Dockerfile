@@ -16,6 +16,10 @@ FROM --platform=$BUILDPLATFORM golang:1.25 AS builder
 WORKDIR /app
 ARG TARGETOS=linux
 ARG TARGETARCH
+# 可选 Go module 代理(国内构建可传 --build-arg GOPROXY=https://goproxy.cn,direct);
+# 默认 direct,不影响境外/默认环境。
+ARG GOPROXY=direct
+ENV GOPROXY=$GOPROXY
 
 COPY backend/go.mod backend/go.sum ./
 RUN go mod download
