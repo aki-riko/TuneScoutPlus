@@ -285,7 +285,7 @@ func authRequired(provider authSettingsProvider) gin.HandlerFunc {
 }
 
 func renderAuthPage(c *gin.Context, mode string, errMsg string, username string) {
-	title := "登录 music-dl"
+	title := "登录 TuneScout+"
 	action := RoutePrefix + "/login"
 	button := "登录"
 	if mode == "setup" {
