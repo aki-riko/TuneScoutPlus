@@ -65,6 +65,20 @@ npm start
 - [peter-bf/tunescout](https://github.com/peter-bf/tunescout) —— 发现页 UI
 - [guohuiyuan/go-music-dl](https://github.com/guohuiyuan/go-music-dl)（作者 guohuiyuan）—— 多源搜索与下载引擎
 
+## 安全说明
+
+部署前请了解以下安全边界:
+
+- **对外暴露需先设管理员**:后端默认监听全部网卡(`0.0.0.0`)。搜索/播放/下载等只读功能匿名可用;而扫码登录、Cookie 管理等敏感操作(`/api/v1/qr_login`、`/api/v1/cookies`)要求管理员鉴权——首次访问后端 `/music/setup` 用启动终端打印的令牌初始化管理员账号后方可使用。
+- **仅本机使用更安全**:若只在本机使用,用 `--desktop` 模式启动会绑定 `127.0.0.1`。
+- **SSRF 防护**:封面代理 `/music/cover_proxy` 已拒绝指向内网/环回/云元数据(`169.254.169.254`)的目标。
+- **登录防爆破**:管理员登录失败有次数锁定;密码以 bcrypt 存储。
+- **上传限制**:本地音乐上传仅接受音频扩展名白名单,文件名经清洗防路径穿越。
+- **前端构建依赖告警**:`npm audit` 会报若干来自 `react-scripts`(CRA 5,已停止维护)的告警,这些是 webpack-dev-server/svgr 等**构建期工具**,不进生产产物。运行时依赖(axios、react 等)已升级到无已知高危漏洞的版本。彻底清除构建期告警需迁移到 Vite 等新构建工具。
+- **ffmpeg**:视频生成等功能依赖系统 ffmpeg;exec 调用均使用参数数组,无 shell 注入。
+
+发现安全问题请提 issue 或私下联系维护者。
+
 ## 许可证
 
 本项目整体采用 **AGPL-3.0**（继承自 go-music-dl）。详见 [LICENSE](./LICENSE)。
