@@ -400,9 +400,7 @@ func StartWithOptions(port string, opts StartOptions) {
 	))
 	r.SetHTMLTemplate(tmpl)
 
-	r.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, RoutePrefix)
-	})
+	// 根路径与 SPA 托管在 registerFrontend 中统一注册(见路由末尾)。
 
 	videoDir := "data/video_output"
 	os.MkdirAll(videoDir, 0755)
@@ -470,6 +468,9 @@ func StartWithOptions(port string, opts StartOptions) {
 	// TuneScout+ 新增:供 React 前端使用的纯 JSON 接口(/api/v1),与 /music HTMX 路由并存。
 	// 敏感接口(登录/cookie)复用同一套管理员鉴权。
 	RegisterJSONAPIRoutes(r, opts)
+
+	// TuneScout+:在根路径托管 React 前端 SPA(产物嵌入二进制)。必须最后注册(含 NoRoute 兜底)。
+	registerFrontend(r)
 
 	listenAddr := opts.ListenHost + ":" + port
 	listener, err := net.Listen("tcp", listenAddr)

@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-// 后端基址:开发期由 .env 的 VITE_MUSICDL_API 指定(默认本地 8080),
-// 生产期前后端同源时留空即可。禁止硬编码,遵循全局规则。
-const API_BASE = import.meta.env.VITE_MUSICDL_API || 'http://127.0.0.1:8080';
+// 后端基址:开发期由 .env 的 VITE_MUSICDL_API 指定(见 .env.development.local 指向本地后端);
+// 生产/同源部署(如 Docker 内后端托管前端)留空 → axios 走相对路径,自动用当前 origin。
+// 禁止硬编码,遵循全局规则。
+const API_BASE = import.meta.env.VITE_MUSICDL_API || '';
 
 const client = axios.create({
   baseURL: API_BASE,

@@ -1,0 +1,15 @@
+# 构建上下文排除(加速 docker build,避免传输无关大目录)
+**/node_modules
+frontend/build
+frontend/.env
+frontend/.env.*.local
+backend/data
+backend/music-dl
+backend/music-dl.exe
+backend/*.exe
+# 后端 embed 占位目录里如有真实产物残留也排除(构建阶段会重新拷)
+backend/internal/web/frontend_dist/assets
+.git
+_merge_src
+**/.playwright-mcp
+*.md
