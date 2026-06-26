@@ -1197,6 +1197,7 @@ func embedMP3ID3v23Metadata(audioData []byte, title, artist, album, lyric string
 	}
 	if artist != "" {
 		replaceFrames["TPE1"] = true
+		replaceFrames["TPE2"] = true // 专辑艺人,便于 Plex/Navidrome 按专辑艺人归类
 	}
 	if album != "" {
 		replaceFrames["TALB"] = true
@@ -1214,6 +1215,8 @@ func embedMP3ID3v23Metadata(audioData []byte, title, artist, album, lyric string
 	}
 	if artist != "" {
 		frames.Write(id3v23Frame("TPE1", id3TextFramePayload(artist)))
+		// TPE2 专辑艺人:单曲场景用主唱填,保证按专辑艺人分组的音乐库正确归类
+		frames.Write(id3v23Frame("TPE2", id3TextFramePayload(artist)))
 	}
 	if album != "" {
 		frames.Write(id3v23Frame("TALB", id3TextFramePayload(album)))
@@ -1716,6 +1719,8 @@ func embedAudioMetadataByFFmpeg(audioData []byte, ext, title, artist, album, lyr
 	}
 	if artist != "" {
 		args = append(args, "-metadata", "artist="+artist)
+		// 专辑艺人(FLAC 写 ALBUMARTIST / MP3 写 TPE2),便于按专辑艺人归类
+		args = append(args, "-metadata", "album_artist="+artist)
 	}
 	if album != "" {
 		args = append(args, "-metadata", "album="+album)
