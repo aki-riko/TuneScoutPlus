@@ -115,11 +115,11 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
     >
       <div
         ref={modalRef}
-        className={`bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl relative transition-all duration-300 ease-in-out ${
+        className={`bg-card p-8 shadow-brutal border-2 border-border w-full max-w-4xl relative transition-all duration-300 ease-in-out ${
           isVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
         } overflow-y-auto max-h-[90vh]`}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-800">
+        <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -139,7 +139,7 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
                 requestDownloadSearch(`${track.name} ${track.artist}`);
                 onClose();
               }}
-              className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition"
+              className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
               title="跳转到下载页,从国内源搜索这首歌"
             >
               ↓ 在国内源下载这首歌
@@ -151,11 +151,11 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
                 height="152"
                 frameBorder="0"
                 allow="encrypted-media"
-                className="mb-6 rounded"
+                className="mb-6"
                 title="Track Player"
               ></iframe>
             ) : (
-              <p className="mb-6 text-gray-500">Spotify preview unavailable for this track.</p>
+              <p className="mb-6 text-muted-foreground">Spotify preview unavailable for this track.</p>
             )}
             <div className="mb-4">
               <h3 className="text-2xl font-semibold mb-2">Additional Stats</h3>
@@ -179,7 +179,7 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
                   ) : null}
                 </ul>
               ) : (
-                !loading && <p className="text-gray-500">We could not find additional stats for this track.</p>
+                !loading && <p className="text-muted-foreground">We could not find additional stats for this track.</p>
               )}
             </div>
           </div>
@@ -204,11 +204,11 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
                 height="380"
                 frameBorder="0"
                 allow="encrypted-media"
-                className="rounded flex-grow"
+                className="flex-grow"
                 title="Album Player"
               ></iframe>
             ) : null}
-            {loading ? <p className="mt-4 text-center text-gray-500">Loading details...</p> : null}
+            {loading ? <p className="mt-4 text-center text-muted-foreground">Loading details...</p> : null}
           </div>
         </div>
         
@@ -219,22 +219,22 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              className="w-full p-2 border rounded-md resize-none"
+              className="w-full p-2 border-2 border-border resize-none"
               placeholder="Write a comment..."
               rows="1"
               maxLength="70"
             ></textarea>
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {error && <p className="text-destructive text-sm mt-1">{error}</p>}
             <button
               type="submit"
-              className="mt-2 bg-primary text-white px-5 py-2 rounded-full hover:bg-red-500 transition duration-300"
+              className="mt-2 bg-primary text-primary-foreground px-5 py-2 rounded-full border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               Post Comment
             </button>
           </form>
           <div className="space-y-4">
             {comments.map((comment, index) => (
-              <div key={index} className="bg-gray-100 p-4 rounded-md">
+              <div key={index} className="bg-muted p-4 border-2 border-border">
                 <p>{comment}</p>
               </div>
             ))}

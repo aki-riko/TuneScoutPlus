@@ -16,7 +16,7 @@ const ArtistCard = ({ artist, index, onClick, ...rest }) => {
   return (
     <div
       key={artist.id}
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-all duration-150 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:shadow-glow hover:bg-gray-100 w-48 h-64"
+      className="bg-card border-2 border-border shadow-brutal-sm overflow-hidden cursor-pointer transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none w-48 h-64"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex="0"
@@ -28,7 +28,7 @@ const ArtistCard = ({ artist, index, onClick, ...rest }) => {
         <img
           src={artist.image}
           alt={artist.name}
-          className="w-full h-36 object-cover"
+          className="w-full h-36 object-cover border-b-2 border-border"
           loading="lazy"
           draggable="false"
         />
@@ -40,10 +40,10 @@ const ArtistCard = ({ artist, index, onClick, ...rest }) => {
         </h3>
         {index !== undefined ? (
           <>
-            <p className="text-m text-red-600 truncate mt-3">
+            <p className="text-sm font-bold text-primary truncate mt-3">
               Listeners: {formatNumber(artist.listeners)}
             </p>
-            <p className="text-m text-black-500">
+            <p className="text-sm text-muted-foreground">
               Playcount: {formatNumber(artist.playcount)}
             </p>
           </>

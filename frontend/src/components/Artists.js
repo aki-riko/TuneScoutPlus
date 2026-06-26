@@ -60,7 +60,7 @@ const Artists = () => {
     }
   }, [artists, currentPage]);
 
-  if (error) return <p className="text-red-500 text-center mt-4" role="alert">Failed to fetch top artists</p>;
+  if (error) return <p className="text-destructive text-center mt-4" role="alert">Failed to fetch top artists</p>;
   if (isLoading) return <p className="text-center mt-4" role="status">Loading...</p>;
 
   const paginate = (pageNumber) => {
@@ -79,7 +79,7 @@ const Artists = () => {
   return (
     <div className="p-4 mb-3">
       <header>
-        <h1 className="text-5xl font-bold text-center mb-5 text-red-600 py-3" id="top-artists-heading">Top 50 Artists</h1>
+        <h1 className="text-5xl font-bold text-center mb-5 text-primary py-3" id="top-artists-heading">Top 50 Artists</h1>
       </header>
       <main>
         <div className="flex justify-center">
@@ -99,7 +99,7 @@ const Artists = () => {
         <nav aria-label="Pagination" className="flex justify-center mt-6">
           <button
             onClick={handlePreviousPage}
-            className={`px-4 py-2 mx-1 rounded ${currentPage === 1 ? 'bg-gray-300 text-gray-500' : 'bg-white text-red-600'}`}
+            className={`px-4 py-2 mx-1 border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none ${currentPage === 1 ? 'bg-muted text-muted-foreground' : 'bg-card text-primary'}`}
             disabled={currentPage === 1}
             aria-label="Previous Page"
           >
@@ -109,7 +109,7 @@ const Artists = () => {
             <button
               key={i + 1}
               onClick={() => paginate(i + 1)}
-              className={`px-4 py-2 mx-1 rounded ${i + 1 === currentPage ? 'bg-red-600 text-white' : 'bg-white text-red-600'}`}
+              className={`px-4 py-2 mx-1 border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none ${i + 1 === currentPage ? 'bg-primary text-primary-foreground' : 'bg-card text-primary'}`}
               aria-label={`Page ${i + 1}`}
               aria-current={i + 1 === currentPage ? 'page' : undefined}
             >
@@ -118,7 +118,7 @@ const Artists = () => {
           ))}
           <button
             onClick={handleNextPage}
-            className={`px-4 py-2 mx-1 rounded ${currentPage === Math.ceil(artists.length / artistsPerPage) ? 'bg-gray-300 text-gray-500' : 'bg-white text-red-600'}`}
+            className={`px-4 py-2 mx-1 border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none ${currentPage === Math.ceil(artists.length / artistsPerPage) ? 'bg-muted text-muted-foreground' : 'bg-card text-primary'}`}
             disabled={currentPage === Math.ceil(artists.length / artistsPerPage)}
             aria-label="Next Page"
           >

@@ -71,26 +71,26 @@ const QRLoginCard = ({ source, loggedIn, onLoggedIn }) => {
   };
 
   return (
-    <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
+    <div className="bg-card border-2 border-border shadow-brutal-sm p-4">
       <div className="flex justify-between items-center mb-3">
-        <span className="text-white font-semibold">{SOURCE_LABELS[source] || source}</span>
+        <span className="font-bold">{SOURCE_LABELS[source] || source}</span>
         {loggedIn ? (
-          <span className="text-xs px-2 py-0.5 rounded bg-green-700 text-white">已登录</span>
+          <span className="text-xs font-bold px-2 py-0.5 border-2 border-border bg-success text-success-foreground">已登录</span>
         ) : (
-          <span className="text-xs px-2 py-0.5 rounded bg-zinc-700 text-gray-300">未登录</span>
+          <span className="text-xs font-bold px-2 py-0.5 border-2 border-border bg-muted text-muted-foreground">未登录</span>
         )}
       </div>
       {session && session.url && status !== 'success' && (
         <div className="flex flex-col items-center mb-3">
-          <div className="bg-white p-2 rounded">
+          <div className="bg-white border-2 border-border p-2">
             <QRCodeCanvas value={session.url} size={180} />
           </div>
-          <p className="text-sm text-gray-400 mt-2">{STATUS_TEXT[status] || status}</p>
+          <p className="text-sm font-bold text-muted-foreground mt-2">{STATUS_TEXT[status] || status}</p>
         </div>
       )}
       <button
         onClick={startLogin}
-        className="w-full px-3 py-2 rounded bg-primary text-white text-sm hover:bg-red-600 transition"
+        className="w-full px-3 py-2 border-2 border-border bg-primary text-primary-foreground font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
       >
         {session ? '刷新二维码' : '扫码登录'}
       </button>
@@ -127,12 +127,12 @@ const Settings = () => {
 
   return (
     <div className="max-w-5xl mx-auto pb-32">
-      <h2 className="text-3xl font-bold text-primary mb-2">设置 · Settings</h2>
-      <p className="text-gray-400 mb-6">扫码登录各平台以解锁会员/无损音质,管理已下载的本地音乐。</p>
+      <h2 className="text-3xl font-extrabold mb-2 inline-block border-2 border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">设置 · Settings</h2>
+      <p className="text-muted-foreground mb-6 mt-3">扫码登录各平台以解锁会员/无损音质,管理已下载的本地音乐。</p>
 
       {authErr && (
-        <div className="mb-6 p-4 rounded-lg bg-yellow-900/40 border border-yellow-700 text-yellow-200">
-          <p className="font-semibold mb-1">需要管理员身份</p>
+        <div className="mb-6 p-4 border-2 border-border bg-destructive/10 shadow-brutal-sm">
+          <p className="font-bold mb-1">需要管理员身份</p>
           <p className="text-sm mb-2">
             扫码登录与 Cookie 管理属于敏感操作,后端已要求管理员鉴权。请先
             {authErr.setupRequired ? '初始化管理员账号' : '登录'}后再使用本页功能。
@@ -141,7 +141,7 @@ const Settings = () => {
             href={authErr.setupRequired ? adminSetupUrl : adminLoginUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-block px-3 py-1.5 rounded bg-yellow-700 text-white text-sm hover:bg-yellow-600 transition"
+            className="inline-block px-3 py-1.5 border-2 border-border bg-destructive text-destructive-foreground font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
           >
             前往{authErr.setupRequired ? '初始化' : '登录'}页 ↗
           </a>
@@ -149,7 +149,7 @@ const Settings = () => {
       )}
 
       <section className="mb-10">
-        <h3 className="text-xl font-semibold text-white mb-4">账号登录</h3>
+        <h3 className="text-xl font-bold mb-4">账号登录</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {sources.map((src) => (
             <div key={src}>
@@ -157,7 +157,7 @@ const Settings = () => {
               {status[src] && (
                 <button
                   onClick={() => handleLogout(src)}
-                  className="w-full mt-2 px-3 py-1.5 rounded bg-zinc-800 text-gray-300 text-sm hover:bg-zinc-700 transition"
+                  className="w-full mt-2 px-3 py-1.5 border-2 border-border bg-card font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
                 >
                   退出登录
                 </button>
@@ -169,32 +169,32 @@ const Settings = () => {
 
       <section>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold text-white">本地音乐库</h3>
+          <h3 className="text-xl font-bold">本地音乐库</h3>
           <button
             onClick={() => localMusic.refetch()}
-            className="px-3 py-1.5 rounded bg-zinc-800 text-gray-300 text-sm hover:bg-zinc-700 transition"
+            className="px-3 py-1.5 border-2 border-border bg-card font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
           >
             刷新
           </button>
         </div>
-        <p className="text-gray-500 text-sm mb-3">
+        <p className="text-muted-foreground text-sm mb-3">
           下载目录:{localMusic.data?.download_dir || '—'}
           {localMusic.data && !localMusic.data.exists && '(目录不存在)'}
         </p>
-        {localMusic.isLoading && <p className="text-gray-400">加载中…</p>}
+        {localMusic.isLoading && <p className="text-muted-foreground font-bold">加载中…</p>}
         {tracks.length === 0 && !localMusic.isLoading && (
-          <p className="text-gray-400">本地音乐库为空。在下载页下载歌曲后会出现在这里。</p>
+          <p className="text-muted-foreground">本地音乐库为空。在下载页下载歌曲后会出现在这里。</p>
         )}
         <div className="space-y-2">
           {tracks.map((t) => (
-            <div key={t.id} className="flex items-center gap-3 p-3 rounded-lg bg-zinc-900 border border-zinc-800">
+            <div key={t.id} className="flex items-center gap-3 p-3 border-2 border-border bg-card shadow-brutal-sm">
               <div className="flex-grow min-w-0">
-                <p className="text-white truncate">{t.name}</p>
-                <p className="text-sm text-gray-400 truncate">{t.artist}{t.album ? ` · ${t.album}` : ''}</p>
+                <p className="font-bold truncate">{t.name}</p>
+                <p className="text-sm text-muted-foreground truncate">{t.artist}{t.album ? ` · ${t.album}` : ''}</p>
               </div>
               <button
                 onClick={() => handleDeleteLocal(t.id)}
-                className="px-3 py-1.5 rounded bg-zinc-800 text-red-400 text-sm hover:bg-red-900 transition"
+                className="px-3 py-1.5 border-2 border-border bg-destructive text-destructive-foreground font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
               >
                 删除
               </button>

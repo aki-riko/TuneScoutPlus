@@ -72,16 +72,16 @@ const FAQ = () => {
       <h1 className="text-4xl font-bold mb-8 text-center">{translations[language].faq}</h1>
       <div className="max-w-2xl mx-auto space-y-4">
         {translations[language].questions.map((faq, index) => (
-          <div key={index} className="border rounded-lg">
+          <div key={index} className="border-2 border-border shadow-brutal-sm">
             <div
               onClick={() => toggleFAQ(index)}
-              className="cursor-pointer flex justify-between items-center p-4 bg-gray-100 rounded-t-lg"
+              className="cursor-pointer flex justify-between items-center p-4 bg-muted"
             >
               <h2 className="text-xl font-semibold">{faq.question}</h2>
               <span>{openIndex === index ? '-' : '+'}</span>
             </div>
             {openIndex === index && (
-              <div className="p-4 bg-white">
+              <div className="p-4 bg-card border-t-2 border-border">
                 <p className="text-lg">{faq.answer}</p>
               </div>
             )}

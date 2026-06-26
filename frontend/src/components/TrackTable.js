@@ -3,9 +3,9 @@ import { formatNumber } from '../utils/format';
 
 const TrackTable = ({ tracks, onClick }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col">
+    <div className="bg-card border-2 border-border shadow-brutal-sm overflow-hidden h-full flex flex-col">
       <table className="w-full">
-        <thead className="bg-zinc-900/100 text-accent">
+        <thead className="bg-muted text-foreground">
           <tr>
             <th className="px-2 py-1 text-left">#</th>
             <th className="px-2 py-1 text-left"></th>
@@ -21,7 +21,7 @@ const TrackTable = ({ tracks, onClick }) => {
             {tracks.map((track, index) => (
               <tr
                 key={track.id}
-                className={`${index % 2 === 0 ? 'bg-primary/20' : 'bg-accent/10'} hover:bg-gray-200 cursor-pointer transition-colors duration-300`}
+                className={`${index % 2 === 0 ? 'bg-primary/20' : 'bg-accent/10'} hover:bg-muted cursor-pointer transition-colors duration-300`}
                 onClick={() => onClick(track)}
               >
                 <td className="px-2 py-1">{index + 7}</td>

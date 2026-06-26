@@ -25,17 +25,17 @@ const SearchPane = ({ keyword, setKeyword, onSubmit, query, state, onPlay, onSho
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="输入歌名 / 歌手,或粘贴链接…"
-          className="flex-grow px-4 py-3 rounded-lg bg-zinc-900 text-white border border-zinc-700 focus:border-primary outline-none"
+          className="flex-grow px-4 py-3 border-2 border-border bg-card font-medium shadow-brutal-sm focus:shadow-brutal focus:-translate-x-0.5 focus:-translate-y-0.5 outline-none transition-all"
         />
-        <button type="submit" className="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-red-600 transition">
+        <button type="submit" className="px-6 py-3 border-2 border-border bg-primary text-primary-foreground font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
           搜索
         </button>
       </form>
-      {state.data?.error && <p className="text-yellow-500 mb-4">{state.data.error}</p>}
-      {state.isLoading && <p className="text-gray-400">搜索中…</p>}
-      {state.isError && <p className="text-red-500">搜索失败:{String(state.error?.message || state.error)}</p>}
+      {state.data?.error && <p className="text-destructive font-bold mb-4">{state.data.error}</p>}
+      {state.isLoading && <p className="text-muted-foreground font-bold mb-4">搜索中…</p>}
+      {state.isError && <p className="text-destructive font-bold">搜索失败:{String(state.error?.message || state.error)}</p>}
       {query && !state.isLoading && songs.length === 0 && !state.data?.error && (
-        <p className="text-gray-400">没有找到结果。</p>
+        <p className="text-muted-foreground">没有找到结果。</p>
       )}
       <div className="space-y-2 pb-32">
         {songs.map((song, idx) => (
@@ -55,44 +55,44 @@ const SearchPane = ({ keyword, setKeyword, onSubmit, query, state, onPlay, onSho
 
 // 歌词弹窗
 const LyricModal = ({ lyric, onClose }) => (
-  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" onClick={onClose}>
-    <div className="bg-zinc-900 rounded-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={onClose}>
+    <div className="bg-card border-2 border-border shadow-brutal-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-xl font-bold text-white">{lyric.song.name}</h3>
-          <p className="text-gray-400 text-sm">{lyric.song.artist}</p>
+          <h3 className="text-xl font-bold">{lyric.song.name}</h3>
+          <p className="text-muted-foreground text-sm">{lyric.song.artist}</p>
         </div>
-        <button onClick={onClose} className="text-gray-400 hover:text-white text-2xl leading-none">×</button>
+        <button onClick={onClose} className="font-bold text-2xl leading-none hover:text-primary transition-colors">×</button>
       </div>
-      <pre className="whitespace-pre-wrap text-gray-300 text-sm font-sans">{lyric.text}</pre>
+      <pre className="whitespace-pre-wrap text-foreground text-sm font-sans">{lyric.text}</pre>
     </div>
   </div>
 );
 
 // 推荐歌单面板(按源分栏的网格)
 const DiscoverPane = ({ state, onOpen }) => {
-  if (state.isLoading) return <p className="text-gray-400">加载推荐歌单…</p>;
-  if (state.isError) return <p className="text-red-500">加载失败:{String(state.error?.message || state.error)}</p>;
+  if (state.isLoading) return <p className="text-muted-foreground font-bold">加载推荐歌单…</p>;
+  if (state.isError) return <p className="text-destructive font-bold">加载失败:{String(state.error?.message || state.error)}</p>;
   const tabs = state.data?.tabs || [];
   return (
     <div className="space-y-8 pb-32">
       {tabs.map((tab) => (
         <div key={tab.source}>
-          <h3 className="text-xl font-semibold text-white mb-3">{tab.source_name || tab.source}</h3>
-          {tab.error && <p className="text-yellow-500 text-sm mb-2">{tab.error}</p>}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <h3 className="text-xl font-bold mb-3 inline-block border-2 border-border bg-primary text-primary-foreground px-3 py-1 shadow-brutal-sm">{tab.source_name || tab.source}</h3>
+          {tab.error && <p className="text-destructive font-bold text-sm mb-2">{tab.error}</p>}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-3">
             {(tab.playlists || []).map((pl) => (
               <div
                 key={`${pl.source}-${pl.id}`}
-                className="cursor-pointer group"
+                className="cursor-pointer group border-2 border-border bg-card shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none p-2"
                 onClick={() => onOpen({ id: pl.id, source: pl.source, name: pl.name })}
               >
-                <div className="aspect-square rounded-lg overflow-hidden bg-zinc-800">
+                <div className="aspect-square overflow-hidden border-2 border-border bg-muted">
                   {pl.cover && (
-                    <img src={pl.cover} alt={pl.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition" />
+                    <img src={pl.cover} alt={pl.name} loading="lazy" className="w-full h-full object-cover" />
                   )}
                 </div>
-                <p className="text-sm text-white mt-2 line-clamp-2">{pl.name}</p>
+                <p className="text-sm font-bold mt-2 line-clamp-2">{pl.name}</p>
               </div>
             ))}
           </div>
@@ -107,10 +107,10 @@ const PlaylistDetailPane = ({ meta, state, onBack, onPlay, onShowLyric, isPlayin
   const songs = state.data?.songs || [];
   return (
     <div className="pb-32">
-      <button onClick={onBack} className="mb-4 text-primary hover:text-white transition">← 返回推荐歌单</button>
-      <h3 className="text-2xl font-bold text-white mb-4">{meta.name}</h3>
-      {state.isLoading && <p className="text-gray-400">加载歌单…</p>}
-      {state.data?.error && <p className="text-yellow-500 mb-4">{state.data.error}</p>}
+      <button onClick={onBack} className="mb-4 px-3 py-1.5 border-2 border-border bg-card font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">← 返回推荐歌单</button>
+      <h3 className="text-2xl font-bold mb-4">{meta.name}</h3>
+      {state.isLoading && <p className="text-muted-foreground font-bold">加载歌单…</p>}
+      {state.data?.error && <p className="text-destructive font-bold mb-4">{state.data.error}</p>}
       <div className="space-y-2">
         {songs.map((song, idx) => (
           <SongRow
@@ -201,13 +201,12 @@ const Download = ({ downloadRequest }) => {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold text-primary mb-2">下载 · Download</h2>
-      <p className="text-gray-400 mb-4">
+      <h2 className="text-3xl font-extrabold mb-2 inline-block border-2 border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">下载 · Download</h2>
+      <p className="text-muted-foreground mb-4 mt-3">
         从国内多源(网易云 / QQ / 酷狗 / 酷我 / 咪咕 / 汽水 等)搜索并下载,支持粘贴歌曲/歌单链接。
       </p>
 
-
-      <div className="flex gap-2 mb-6 border-b border-zinc-800">
+      <div className="flex gap-2 mb-6">
         {TABS.map((t) => (
           <button
             key={t.key}
@@ -215,10 +214,10 @@ const Download = ({ downloadRequest }) => {
               setTab(t.key);
               setOpenPlaylist(null);
             }}
-            className={`px-4 py-2 -mb-px border-b-2 transition ${
+            className={`px-4 py-2 border-2 border-border font-bold transition-all ${
               tab === t.key
-                ? 'border-primary text-white'
-                : 'border-transparent text-gray-400 hover:text-white'
+                ? 'bg-primary text-primary-foreground shadow-brutal-sm'
+                : 'bg-card hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-brutal-sm'
             }`}
           >
             {t.label}
@@ -257,11 +256,11 @@ const Download = ({ downloadRequest }) => {
       {lyric && <LyricModal lyric={lyric} onClose={() => setLyric(null)} />}
 
       {nowPlaying && (
-        <div className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 p-3 z-40">
+        <div className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-border p-3 z-40 shadow-brutal-lg">
           <div className="max-w-5xl mx-auto flex items-center gap-4">
             <div className="min-w-0">
-              <p className="text-white truncate font-semibold">{nowPlaying.name}</p>
-              <p className="text-gray-400 text-sm truncate">
+              <p className="truncate font-bold">{nowPlaying.name}</p>
+              <p className="text-muted-foreground text-sm truncate">
                 {nowPlaying.artist} · {nowPlaying.source}
               </p>
             </div>

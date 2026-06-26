@@ -106,11 +106,11 @@ const ArtistModal = ({ artist, isVisible, onClose, modalRef }) => {
     >
       <div
         ref={modalRef}
-        className={`bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl relative transition-all duration-300 ease-in-out ${
+        className={`bg-card p-8 shadow-brutal border-2 border-border w-full max-w-4xl relative transition-all duration-300 ease-in-out ${
           isVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
         }`}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-800" aria-label="Close modal">
+        <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground" aria-label="Close modal">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -139,11 +139,11 @@ const ArtistModal = ({ artist, isVisible, onClose, modalRef }) => {
               {formatNumber(artistInfo?.stats?.playcount ?? artist.playcount)}
             </p>
             {artistInfo?.bio?.summary ? (
-              <p className="text-base text-gray-700">
+              <p className="text-base text-muted-foreground">
                 {artistInfo.bio.summary.replace(/<[^>]+>/g, '').slice(0, 300)}{artistInfo.bio.summary.length > 300 ? '…' : ''}
               </p>
             ) : null}
-            {loading ? <p className="mt-4 text-gray-500">Loading details…</p> : null}
+            {loading ? <p className="mt-4 text-muted-foreground">Loading details…</p> : null}
           </div>
           <div className="w-1/2 pl-6 flex flex-col">
             <div className="mb-6">

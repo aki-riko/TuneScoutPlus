@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-zinc-950/100 backdrop-blur-sm text-text py-7 mt-4">
+    <footer className="bg-foreground backdrop-blur-sm text-background py-7 mt-4 border-t-2 border-border">
       <div className="container mx-auto container-padding flex justify-between items-center">
         <div className="text-sm text-primary">
           © 2024 TuneScout. All Rights Reserved. <br />

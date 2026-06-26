@@ -95,14 +95,14 @@ function Hero({ onLinkClick, isPopupOpen }) {
   }, [handleMouseUp, handleMouseMove]);
 
   return (
-    <div className="bg-white relative overflow-hidden">
+    <div className="bg-card relative overflow-hidden">
       <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-8 md:mb-0 z-10">
           <h1 className="text-4xl font-bold mb-4">Discover Your Next Favorite Song 🎵</h1>
           <p className="text-xl mb-6">TuneScout scouts the internet for you and helps you find new music.</p>
           <a
             href="#trending"
-            className={`discover-music-btn bg-primary text-white px-8 py-3 rounded-full transition duration-300 ${isPopupOpen ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-500'}`}
+            className={`discover-music-btn bg-primary text-primary-foreground px-8 py-3 rounded-full border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none ${isPopupOpen ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-500'}`}
             onClick={(e) => {
               if (isPopupOpen) {
                 e.preventDefault();

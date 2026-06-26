@@ -12,28 +12,28 @@ const fmtSize = (bytes) => {
 // 单首歌曲行:歌曲搜索结果与歌单/专辑详情共用。
 const SongRow = ({ song, index, isPlaying, onPlay, onShowLyric }) => (
   <div
-    className={`flex items-center gap-3 p-3 rounded-lg bg-zinc-900 border transition ${
-      isPlaying ? 'border-primary' : 'border-zinc-800 hover:border-primary'
+    className={`flex items-center gap-3 p-3 border-2 border-border bg-card text-card-foreground transition-all ${
+      isPlaying ? 'shadow-brutal -translate-x-0.5 -translate-y-0.5' : 'shadow-brutal-sm'
     }`}
   >
-    <span className="text-gray-500 w-6 text-right">{index + 1}</span>
+    <span className="text-muted-foreground font-bold w-6 text-right">{index + 1}</span>
     <div className="flex-grow min-w-0">
-      <p className="font-semibold truncate text-white">
+      <p className="font-bold truncate">
         {song.name}
-        {song.is_vip && <span className="ml-2 text-xs px-1.5 py-0.5 rounded bg-yellow-600 text-white">VIP</span>}
+        {song.is_vip && <span className="ml-2 text-xs font-bold px-1.5 py-0.5 border-2 border-border bg-primary text-primary-foreground">VIP</span>}
       </p>
-      <p className="text-sm text-gray-400 truncate">
+      <p className="text-sm text-muted-foreground truncate">
         {song.artist}
         {song.album ? ` · ${song.album}` : ''}
       </p>
     </div>
-    <span className="text-xs text-gray-500 whitespace-nowrap">{song.source}</span>
-    {song.duration ? <span className="text-xs text-gray-500 whitespace-nowrap">{fmtSec(song.duration)}</span> : null}
-    {song.size ? <span className="text-xs text-gray-500 whitespace-nowrap">{fmtSize(song.size)}</span> : null}
+    <span className="text-xs font-bold text-muted-foreground whitespace-nowrap uppercase">{song.source}</span>
+    {song.duration ? <span className="text-xs text-muted-foreground whitespace-nowrap">{fmtSec(song.duration)}</span> : null}
+    {song.size ? <span className="text-xs text-muted-foreground whitespace-nowrap">{fmtSize(song.size)}</span> : null}
     {onShowLyric && (
       <button
         onClick={() => onShowLyric(song)}
-        className="px-3 py-1.5 rounded bg-zinc-700 text-white text-sm hover:bg-zinc-600 transition"
+        className="px-3 py-1.5 border-2 border-border bg-card font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
         title="查看歌词"
       >
         词
@@ -41,14 +41,14 @@ const SongRow = ({ song, index, isPlaying, onPlay, onShowLyric }) => (
     )}
     <button
       onClick={() => onPlay(song)}
-      className="px-3 py-1.5 rounded bg-zinc-700 text-white text-sm hover:bg-zinc-600 transition"
+      className="px-3 py-1.5 border-2 border-border bg-card font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
       title="在线播放"
     >
       ▶ 播放
     </button>
     <a
       href={getDownloadUrl(song)}
-      className="px-3 py-1.5 rounded bg-primary text-white text-sm hover:bg-red-600 transition no-underline"
+      className="px-3 py-1.5 border-2 border-border bg-primary text-primary-foreground font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] active:shadow-none no-underline"
       title="下载到本地"
     >
       ↓ 下载

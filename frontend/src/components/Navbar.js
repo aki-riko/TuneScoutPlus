@@ -15,14 +15,14 @@ function Navbar({ onLinkClick, isVisible = true, currentSection }) {
 
   return (
     <nav
-      className={`bg-zinc-950/100 backdrop-blur-sm text-text sticky top-0 z-50 transition-transform duration-300 ${
+      className={`bg-background border-b-2 border-border sticky top-0 z-50 transition-transform duration-300 ${
         shouldShow ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="container mx-auto container-padding py-3 flex justify-between items-center">
+      <div className="container mx-auto container-padding py-3 flex justify-between items-center flex-wrap gap-3">
         <a
           href="#home"
-          className="text-3xl font-bold text-primary"
+          className="text-2xl font-extrabold border-2 border-border bg-primary text-primary-foreground px-3 py-1 shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
           onClick={(e) => {
             e.preventDefault();
             handleLinkClick('Home');
@@ -30,13 +30,15 @@ function Navbar({ onLinkClick, isVisible = true, currentSection }) {
         >
           TuneScout+
         </a>
-        <ul className="flex space-x-10 text-lg">
+        <ul className="flex flex-wrap gap-2 text-sm">
           {sections.map((item) => (
             <li key={item}>
               <a
                 href={`#${item.toLowerCase()}`}
-                className={`transition duration-300 ease-in-out relative group ${
-                  currentSection === item ? 'text-white' : 'text-primary hover:text-white'
+                className={`inline-block px-3 py-1.5 border-2 border-border font-bold transition-all ${
+                  currentSection === item
+                    ? 'bg-primary text-primary-foreground shadow-brutal-sm'
+                    : 'bg-card hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-brutal-sm'
                 }`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -45,7 +47,6 @@ function Navbar({ onLinkClick, isVisible = true, currentSection }) {
                 aria-current={currentSection === item ? 'page' : undefined}
               >
                 {item}
-                <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
               </a>
             </li>
           ))}

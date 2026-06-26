@@ -32,23 +32,23 @@ const Discover = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] p-4">
       <h1 className="text-4xl font-bold mb-4">Discover Music</h1>
-      <form onSubmit={handleSearch} className="w-full max-w-lg flex items-center bg-white rounded-lg shadow-md">
+      <form onSubmit={handleSearch} className="w-full max-w-lg flex items-center bg-card border-2 border-border shadow-brutal-sm">
         <div className="px-3">
-          <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg className="h-6 w-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
         <input
           type="text"
-          className="flex-grow p-2 rounded-l-lg focus:outline-none"
+          className="flex-grow p-2 focus:outline-none"
           placeholder="Search for songs or albums..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button type="submit" className="bg-red-600 text-white px-4 py-2 rounded-r-lg">Search</button>
+        <button type="submit" className="bg-primary text-primary-foreground px-4 py-2 border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">Search</button>
       </form>
       {loading && <p className="mt-4">Loading...</p>}
-      {error && <p className="mt-4 text-red-500">{error}</p>}
+      {error && <p className="mt-4 text-destructive">{error}</p>}
       <div className="w-full max-w-4xl mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {searchResults?.tracks?.items?.map((track) => (
           <div key={track.id} className="w-full">
@@ -60,7 +60,6 @@ const Discover = () => {
               allowTransparency="true"
               allow="encrypted-media"
               title={track.name}
-              className="rounded-lg"
             ></iframe>
           </div>
         ))}
@@ -74,15 +73,14 @@ const Discover = () => {
               allowTransparency="true"
               allow="encrypted-media"
               title={album.name}
-              className="rounded-lg"
             ></iframe>
           </div>
         ))}
       </div>
-      <p className="mt-1 text-center text-gray-500">
+      <p className="mt-1 text-center text-muted-foreground">
         (Note: When you click "Add to Spotify," if you are logged into Spotify on the browser, it will actually add it to your Spotify account!)
       </p>
-      <p className="mt-1 text-center text-gray-500">
+      <p className="mt-1 text-center text-muted-foreground">
       Press the play button to play music!
       </p>
 
