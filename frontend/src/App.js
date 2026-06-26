@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -17,61 +17,9 @@ import 'react-toastify/dist/ReactToastify.css';
 // Create a client
 const queryClient = new QueryClient();
 
-const PopupMenu = ({ isOpen, onClose }) => {
-  const popupRef = useRef(null);
-
-  const handleKeyDown = useCallback((event) => {
-    if (event.key === 'Escape' || event.key === 'Enter') {
-      onClose();
-    }
-  }, [onClose]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      const focusableElements = popupRef.current?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-      if (focusableElements && focusableElements.length) {
-        focusableElements[0].focus();
-      }
-    } else {
-      document.removeEventListener('keydown', handleKeyDown);
-    }
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, handleKeyDown]);
-
-  return (
-    <div className={`fixed inset-0 bg-gray-900 bg-opacity-50 ${isOpen ? 'flex' : 'hidden'} justify-center items-center`}>
-      <div
-        ref={popupRef}
-        className="bg-white p-6 rounded-lg shadow-lg w-1/2"
-        tabIndex={0}
-      >
-        <h2 className="text-2xl font-semibold mb-4">欢迎使用 TuneScout+!</h2>
-        <p className="mb-1">- 在「发现 / 热门 / 艺人」里浏览 Last.fm 与 Spotify 的榜单与艺人信息 📈</p>
-        <p className="mb-1">- 在「下载」页从国内多源搜索、在线播放、下载音乐 🎶</p>
-        <p className="mb-1">- 在歌曲详情里可一键跳到「下载」从国内源获取 🔎</p>
-        <p className="mb-4">- 在「视频生成」把歌曲做成带封面与歌词的视频 🎬</p>
-        <button
-          onClick={onClose}
-          className="bg-primary text-white px-6 py-2 rounded-md hover:bg-[#106EBE] transition-colors duration-300"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') onClose();
-          }}
-        >
-          开始使用
-        </button>
-      </div>
-    </div>
-  );
-};
-
 function App() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [currentSection, setCurrentSection] = useState('Home');
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
   const [downloadRequest, setDownloadRequest] = useState({ keyword: '', nonce: 0 });
   const lastScrollYRef = useRef(0);
 
@@ -111,10 +59,6 @@ function App() {
     setCurrentSection(section);
   };
 
-  const closePopup = () => {
-    setIsPopupOpen(false);
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <PlayerProvider>
@@ -127,7 +71,7 @@ function App() {
           <main className="flex-grow">
             {currentSection === 'Home' && (
               <section id="home">
-                <Hero onLinkClick={handleLinkClick} isPopupOpen={isPopupOpen} />
+                <Hero onLinkClick={handleLinkClick} />
                 <div className="flex justify-center">
                   <Trending />
                 </div>
@@ -173,7 +117,6 @@ function App() {
             )}
           </main>
           <Footer />
-          <PopupMenu isOpen={isPopupOpen} onClose={closePopup} />
           <PlayerBar />
           {/* <ToastContainer /> */}
         </div>
