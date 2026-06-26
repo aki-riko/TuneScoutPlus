@@ -217,22 +217,27 @@ func clearAuthCookie(c *gin.Context) {
 }
 
 func safeAuthRedirectTarget(raw string) string {
+	// TuneScout+:登录/初始化成功后默认回到 React 应用根路径 "/",
+	// 不再回老的 RoutePrefix(/music 已下线)。仅接受站内相对路径。
+	const defaultTarget = "/"
 	raw = strings.TrimSpace(raw)
 	if raw == "" {
-		return RoutePrefix
+		return defaultTarget
 	}
 	parsed, err := url.Parse(raw)
 	if err != nil || parsed.IsAbs() || strings.HasPrefix(raw, "//") {
-		return RoutePrefix
+		return defaultTarget
 	}
 	if parsed.Path == "" {
-		return RoutePrefix
+		return defaultTarget
 	}
-	if parsed.Path != RoutePrefix && !strings.HasPrefix(parsed.Path, RoutePrefix+"/") {
-		return RoutePrefix
-	}
+	// 不允许跳回登录/初始化页自身(会成环)
 	if parsed.Path == RoutePrefix+"/login" || parsed.Path == RoutePrefix+"/setup" {
-		return RoutePrefix
+		return defaultTarget
+	}
+	// 老的 /music 首页已下线,跳它没意义 → 回根
+	if parsed.Path == RoutePrefix {
+		return defaultTarget
 	}
 	return parsed.String()
 }
@@ -443,6 +448,6 @@ func bindAuthRoutes(api *gin.RouterGroup) {
 
 	api.POST("/logout", func(c *gin.Context) {
 		clearAuthCookie(c)
-		c.Redirect(http.StatusFound, RoutePrefix)
+		c.Redirect(http.StatusFound, "/")
 	})
 }

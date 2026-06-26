@@ -113,13 +113,14 @@ func TestSafeAuthRedirectTarget(t *testing.T) {
 		raw  string
 		want string
 	}{
-		{raw: "", want: RoutePrefix},
+		{raw: "", want: "/"},
 		{raw: "/music/search?q=test", want: "/music/search?q=test"},
-		{raw: "/music/login", want: RoutePrefix},
-		{raw: "/music/setup", want: RoutePrefix},
-		{raw: "/other", want: RoutePrefix},
-		{raw: "https://example.com/music", want: RoutePrefix},
-		{raw: "//example.com/music", want: RoutePrefix},
+		{raw: "/music/login", want: "/"},
+		{raw: "/music/setup", want: "/"},
+		{raw: "/music", want: "/"},
+		{raw: "/other", want: "/other"},
+		{raw: "https://example.com/music", want: "/"},
+		{raw: "//example.com/music", want: "/"},
 	}
 
 	for _, tt := range tests {
