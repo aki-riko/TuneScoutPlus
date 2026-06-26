@@ -209,6 +209,14 @@ func playlistDetailURL(root string, searchType string, playlist model.Playlist) 
 }
 
 func renderIndex(c *gin.Context, songs []model.Song, playlists []model.Playlist, q string, selected []string, errMsg string, searchType string, playlistLink string, colID string, colName string, isLocalColPage bool, collectionKind string, importCollection *importCollectionMeta) {
+	// TuneScout+:旧版 HTMX 网页界面已下线,统一改用 React 前端 + /api/v1 JSON 接口。
+	// 所有原 HTML 页面入口(首页/搜索/歌单/专辑/分类/本地等)在此返回 410,不再渲染老页面。
+	// 注意:这只影响 HTML 页面,/api/v1/*、/music/download、/music/local_music(JSON)、
+	// /music/lyric、登录等接口不经过本函数,完全不受影响。
+	c.String(http.StatusGone, "该网页界面已下线,请使用 TuneScout+ 前端。")
+	return
+	//nolint:govet // 以下为旧 HTML 渲染逻辑,保留备查,已被上方 return 短路。
+	//goland:noinspection GoUnreachableCode
 	allSrc := core.GetAllSourceNames()
 	desc := make(map[string]string)
 	for _, s := range allSrc {

@@ -3,12 +3,8 @@ package web
 import (
 	"encoding/json"
 	"html/template"
-	"net/http/httptest"
 	"strings"
 	"testing"
-
-	"github.com/gin-gonic/gin"
-	"github.com/guohuiyuan/music-lib/model"
 )
 
 func newTestTemplate(t *testing.T) *template.Template {
@@ -33,40 +29,6 @@ func newTestTemplate(t *testing.T) *template.Template {
 		"templates/pages/*.html",
 		"templates/partials/*.html",
 	))
-}
-
-func TestRenderIndexPlaylistCardsUseAjaxNavigation(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-
-	router := gin.New()
-	router.SetHTMLTemplate(newTestTemplate(t))
-	router.GET(RoutePrefix, func(c *gin.Context) {
-		renderIndex(c, nil, []model.Playlist{
-			{
-				ID:         "123",
-				Name:       "Top Hits",
-				TrackCount: 18,
-				Creator:    "Tester",
-				Source:     "qq",
-				Cover:      "https://example.com/cover.jpg",
-			},
-		}, "", []string{"qq"}, "", collectionContentPlaylist, "", "", "", false, "", nil)
-	})
-
-	req := httptest.NewRequest("GET", RoutePrefix, nil)
-	rec := httptest.NewRecorder()
-	router.ServeHTTP(rec, req)
-
-	body := rec.Body.String()
-	if rec.Code != 200 {
-		t.Fatalf("status = %d, want 200", rec.Code)
-	}
-	if strings.Contains(body, `onclick="location.href=`) {
-		t.Fatalf("rendered html still uses location.href navigation: %s", body)
-	}
-	if !strings.Contains(body, `onclick="navigateTo('`) {
-		t.Fatalf("rendered html missing navigateTo playlist navigation: %s", body)
-	}
 }
 
 func TestAppJSIncludesAjaxNavigationEntryPoints(t *testing.T) {
