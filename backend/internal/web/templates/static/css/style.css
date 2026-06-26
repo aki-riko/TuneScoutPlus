@@ -145,13 +145,13 @@ body.batch-mode .song-card { padding-left: 10px; }
 
 .btn-pill { padding: 8px 18px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; border: 2px solid transparent; }
 .btn-pill:disabled { opacity: 0.6; cursor: not-allowed; filter: grayscale(0.8); }
-.btn-pill-primary { background: #f97316; color: white; }
-.btn-pill-primary:hover { background: #ea580c; transform: translateY(-1px); }
-.btn-pill-fav { background: #f68084; box-shadow: 4px 4px 0 0 #000000; color: white; }
+.btn-pill-primary { background: #f97316; color: white; border-color: #000000; box-shadow: 4px 4px 0 0 #000000; }
+.btn-pill-primary:hover { background: #ea580c; transform: translate(2px,2px); box-shadow: none; }
+.btn-pill-fav { background: #ef4444; box-shadow: 4px 4px 0 0 #000000; color: white; border-color: #000000; }
 .btn-pill-fav:hover { filter: brightness(1.05); transform: translate(2px,2px); box-shadow: none; }
-.btn-pill-category { background: #38bdf8; box-shadow: 4px 4px 0 0 #000000; color: white; text-decoration: none; }
+.btn-pill-category { background: #3b82f6; box-shadow: 4px 4px 0 0 #000000; color: white; border-color: #000000; text-decoration: none; }
 .btn-pill-category:hover { filter: brightness(1.05); transform: translate(2px,2px); box-shadow: none; }
-.btn-pill-mine { background: #fb923c; box-shadow: 4px 4px 0 0 #000000; color: white; }
+.btn-pill-mine { background: #fb923c; box-shadow: 4px 4px 0 0 #000000; color: white; border-color: #000000; }
 .btn-pill-mine:hover { filter: brightness(1.05); transform: translate(2px,2px); box-shadow: none; }
 
 .btn-pill-switch { background: var(--btn-switch-bg); color: var(--btn-switch-text); border-color: var(--btn-switch-border); }
