@@ -208,12 +208,14 @@ func validateSessionValue(settings core.WebAuthSettings, value string, now time.
 
 func setAuthCookie(c *gin.Context, value string) {
 	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie(authCookieName, value, int(sessionMaxAge.Seconds()), RoutePrefix, "", c.Request.TLS != nil, true)
+	// Path 用 "/" 而非 RoutePrefix:登录态需覆盖 React(/)与 /api/* 接口,
+	// 否则跳回根后 React 调 /api/* 带不上鉴权 cookie → 表现为"没登录"。
+	c.SetCookie(authCookieName, value, int(sessionMaxAge.Seconds()), "/", "", c.Request.TLS != nil, true)
 }
 
 func clearAuthCookie(c *gin.Context) {
 	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie(authCookieName, "", -1, RoutePrefix, "", c.Request.TLS != nil, true)
+	c.SetCookie(authCookieName, "", -1, "/", "", c.Request.TLS != nil, true)
 }
 
 func safeAuthRedirectTarget(raw string) string {
