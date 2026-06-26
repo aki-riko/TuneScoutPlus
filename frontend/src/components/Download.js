@@ -25,15 +25,15 @@ const SearchPane = ({ keyword, setKeyword, onSubmit, query, state, onPlay, onSho
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="输入歌名 / 歌手,或粘贴链接…"
-          className="flex-grow px-4 py-3 border-2 border-border bg-card font-medium shadow-brutal-sm focus:shadow-brutal focus:-translate-x-0.5 focus:-translate-y-0.5 outline-none transition-all"
+          className="flex-grow px-4 py-3 border border-border rounded-md bg-card font-medium shadow-brutal-sm focus:shadow-brutal outline-none transition-shadow"
         />
-        <button type="submit" className="px-6 py-3 border-2 border-border bg-primary text-primary-foreground font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+        <button type="submit" className="px-6 py-3 border border-border rounded-md bg-primary text-primary-foreground font-semibold shadow-brutal-sm transition-colors hover:bg-[#106EBE]">
           搜索
         </button>
       </form>
-      {state.data?.error && <p className="text-destructive font-bold mb-4">{state.data.error}</p>}
-      {state.isLoading && <p className="text-muted-foreground font-bold mb-4">搜索中…</p>}
-      {state.isError && <p className="text-destructive font-bold">搜索失败:{String(state.error?.message || state.error)}</p>}
+      {state.data?.error && <p className="text-destructive font-medium mb-4">{state.data.error}</p>}
+      {state.isLoading && <p className="text-muted-foreground font-medium mb-4">搜索中…</p>}
+      {state.isError && <p className="text-destructive font-medium">搜索失败:{String(state.error?.message || state.error)}</p>}
       {query && !state.isLoading && songs.length === 0 && !state.data?.error && (
         <p className="text-muted-foreground">没有找到结果。</p>
       )}
@@ -56,10 +56,10 @@ const SearchPane = ({ keyword, setKeyword, onSubmit, query, state, onPlay, onSho
 // 歌词弹窗
 const LyricModal = ({ lyric, onClose }) => (
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={onClose}>
-    <div className="bg-card border-2 border-border shadow-brutal-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+    <div className="bg-card border border-border rounded-lg shadow-brutal-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-xl font-bold">{lyric.song.name}</h3>
+          <h3 className="text-xl font-semibold">{lyric.song.name}</h3>
           <p className="text-muted-foreground text-sm">{lyric.song.artist}</p>
         </div>
         <button onClick={onClose} className="font-bold text-2xl leading-none hover:text-primary transition-colors">×</button>
@@ -78,16 +78,16 @@ const DiscoverPane = ({ state, onOpen }) => {
     <div className="space-y-8 pb-32">
       {tabs.map((tab) => (
         <div key={tab.source}>
-          <h3 className="text-xl font-bold mb-3 inline-block border-2 border-border bg-primary text-primary-foreground px-3 py-1 shadow-brutal-sm">{tab.source_name || tab.source}</h3>
+          <h3 className="text-xl font-bold mb-3 inline-block border border-border bg-primary text-primary-foreground px-3 py-1 shadow-brutal-sm">{tab.source_name || tab.source}</h3>
           {tab.error && <p className="text-destructive font-bold text-sm mb-2">{tab.error}</p>}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-3">
             {(tab.playlists || []).map((pl) => (
               <div
                 key={`${pl.source}-${pl.id}`}
-                className="cursor-pointer group border-2 border-border bg-card shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none p-2"
+                className="cursor-pointer group border border-border bg-card shadow-brutal-sm transition-all p-2"
                 onClick={() => onOpen({ id: pl.id, source: pl.source, name: pl.name })}
               >
-                <div className="aspect-square overflow-hidden border-2 border-border bg-muted">
+                <div className="aspect-square overflow-hidden border border-border bg-muted">
                   {pl.cover && (
                     <img src={pl.cover} alt={pl.name} loading="lazy" className="w-full h-full object-cover" />
                   )}
@@ -107,7 +107,7 @@ const PlaylistDetailPane = ({ meta, state, onBack, onPlay, onShowLyric, isPlayin
   const songs = state.data?.songs || [];
   return (
     <div className="pb-32">
-      <button onClick={onBack} className="mb-4 px-3 py-1.5 border-2 border-border bg-card font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">← 返回推荐歌单</button>
+      <button onClick={onBack} className="mb-4 px-3 py-1.5 border border-border bg-card font-bold text-sm shadow-brutal-sm transition-all">← 返回推荐歌单</button>
       <h3 className="text-2xl font-bold mb-4">{meta.name}</h3>
       {state.isLoading && <p className="text-muted-foreground font-bold">加载歌单…</p>}
       {state.data?.error && <p className="text-destructive font-bold mb-4">{state.data.error}</p>}
@@ -189,7 +189,7 @@ const Download = ({ downloadRequest }) => {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h2 className="text-3xl font-extrabold mb-2 inline-block border-2 border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">下载 · Download</h2>
+      <h2 className="text-3xl font-extrabold mb-2 inline-block border border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">下载 · Download</h2>
       <p className="text-muted-foreground mb-4 mt-3">
         从国内多源(网易云 / QQ / 酷狗 / 酷我 / 咪咕 / 汽水 等)搜索并下载,支持粘贴歌曲/歌单链接。
       </p>
@@ -202,10 +202,10 @@ const Download = ({ downloadRequest }) => {
               setTab(t.key);
               setOpenPlaylist(null);
             }}
-            className={`px-4 py-2 border-2 border-border font-bold transition-all ${
+            className={`px-4 py-2 border border-border font-bold transition-all ${
               tab === t.key
                 ? 'bg-primary text-primary-foreground shadow-brutal-sm'
-                : 'bg-card hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-brutal-sm'
+                : 'bg-card shadow-brutal-sm'
             }`}
           >
             {t.label}

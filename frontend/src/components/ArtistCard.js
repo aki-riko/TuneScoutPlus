@@ -16,7 +16,7 @@ const ArtistCard = ({ artist, index, onClick, ...rest }) => {
   return (
     <div
       key={artist.id}
-      className="bg-card border-2 border-border shadow-brutal-sm overflow-hidden cursor-pointer transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none w-48 h-64"
+      className="bg-card border border-border shadow-brutal-sm overflow-hidden cursor-pointer transition-all w-48 h-64"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex="0"

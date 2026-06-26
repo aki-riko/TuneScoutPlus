@@ -71,14 +71,14 @@ export const PlayerBar = () => {
   const { nowPlaying, audioRef, handleError, notice } = usePlayer();
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-border p-3 z-40 shadow-brutal-lg"
+      className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-3 z-40 shadow-brutal-lg"
       style={{ display: nowPlaying ? 'block' : 'none' }}
     >
       <div className="max-w-5xl mx-auto">
-        {notice && <p className="text-sm text-primary font-bold mb-1">{notice}</p>}
+        {notice && <p className="text-sm text-primary font-medium mb-1">{notice}</p>}
         <div className="flex items-center gap-4">
           <div className="min-w-0">
-            <p className="truncate font-bold">{nowPlaying?.name}</p>
+            <p className="truncate font-semibold">{nowPlaying?.name}</p>
             <p className="text-muted-foreground text-sm truncate">
               {nowPlaying ? `${nowPlaying.artist} · ${nowPlaying.source}` : ''}
             </p>

@@ -102,7 +102,7 @@ function Hero({ onLinkClick, isPopupOpen }) {
           <p className="text-xl mb-6">TuneScout+ 替你在全网搜罗,帮你发现新音乐。</p>
           <a
             href="#trending"
-            className={`discover-music-btn bg-primary text-primary-foreground px-8 py-3 rounded-full border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none ${isPopupOpen ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-500'}`}
+            className={`discover-music-btn bg-primary text-primary-foreground px-8 py-3 rounded-md font-semibold shadow-brutal-sm transition-colors ${isPopupOpen ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#106EBE]'}`}
             onClick={(e) => {
               if (isPopupOpen) {
                 e.preventDefault();

@@ -55,7 +55,7 @@ const PopupMenu = ({ isOpen, onClose }) => {
         <p className="mb-4">- 在「视频生成」把歌曲做成带封面与歌词的视频 🎬</p>
         <button
           onClick={onClose}
-          className="bg-primary text-white px-6 py-2 rounded-full hover:bg-red-500 transition duration-300"
+          className="bg-primary text-white px-6 py-2 rounded-md hover:bg-[#106EBE] transition-colors duration-300"
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.key === 'Enter') onClose();

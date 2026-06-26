@@ -29,7 +29,7 @@ const PlaylistSongs = ({ meta, onBack }) => {
     <div className="pb-32">
       <button
         onClick={onBack}
-        className="mb-4 px-3 py-1.5 border-2 border-border bg-card font-bold text-sm shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+        className="mb-4 px-3 py-1.5 border border-border bg-card font-bold text-sm shadow-brutal-sm transition-all"
       >
         ← 返回
       </button>
@@ -50,7 +50,7 @@ const PlaylistSongs = ({ meta, onBack }) => {
       </div>
       {lyric && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={() => setLyric(null)}>
-          <div className="bg-card border-2 border-border shadow-brutal-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-card border border-border shadow-brutal-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h3 className="text-xl font-bold">{lyric.song.name}</h3>

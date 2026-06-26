@@ -34,7 +34,7 @@ const Discover = () => {
 
   return (
     <div className="max-w-5xl mx-auto pb-32">
-      <h1 className="text-4xl font-extrabold mb-6 inline-block border-2 border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">
+      <h1 className="text-4xl font-semibold mb-6 text-foreground">
         发现音乐
       </h1>
 
@@ -44,8 +44,8 @@ const Discover = () => {
           <button
             key={s.key}
             onClick={() => { setSource(s.key); setCategory(null); }}
-            className={`px-4 py-2 border-2 border-border font-bold shadow-brutal-sm transition-all ${
-              source === s.key ? 'bg-primary text-primary-foreground' : 'bg-card hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
+            className={`px-4 py-2 border border-border rounded-md font-medium shadow-brutal-sm transition-colors ${
+              source === s.key ? 'bg-primary text-primary-foreground' : 'bg-card hover:bg-secondary'
             }`}
           >
             {s.label}
@@ -54,14 +54,14 @@ const Discover = () => {
       </div>
 
       {/* 分类标签 */}
-      {cats.isLoading && <p className="text-muted-foreground font-bold">加载分类…</p>}
+      {cats.isLoading && <p className="text-muted-foreground font-medium">加载分类…</p>}
       <div className="flex flex-wrap gap-2 mb-6">
         {categoryList.map((c) => (
           <button
             key={c.id || c.name}
             onClick={() => setCategory({ id: c.id, name: c.name })}
-            className={`px-3 py-1.5 border-2 border-border text-sm font-bold shadow-brutal-sm transition-all ${
-              category?.id === c.id ? 'bg-primary text-primary-foreground' : 'bg-card hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
+            className={`px-3 py-1.5 border border-border rounded-md text-sm font-medium shadow-brutal-sm transition-colors ${
+              category?.id === c.id ? 'bg-primary text-primary-foreground' : 'bg-card hover:bg-secondary'
             }`}
           >
             {c.name}
@@ -71,18 +71,18 @@ const Discover = () => {
 
       {/* 歌单网格 */}
       {!category && <p className="text-muted-foreground">选一个分类查看歌单。</p>}
-      {category && playlists.isLoading && <p className="text-muted-foreground font-bold">加载歌单…</p>}
+      {category && playlists.isLoading && <p className="text-muted-foreground font-medium">加载歌单…</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
         {plList.map((pl) => (
           <div
             key={`${pl.source}-${pl.id}`}
-            className="cursor-pointer group border-2 border-border bg-card shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none p-2"
+            className="cursor-pointer group border border-border rounded-lg bg-card shadow-brutal-sm transition-shadow hover:shadow-fluent-lg p-2"
             onClick={() => setOpenPlaylist({ id: pl.id, source: pl.source, name: pl.name })}
           >
-            <div className="aspect-square overflow-hidden border-2 border-border bg-muted">
+            <div className="aspect-square overflow-hidden rounded-md border border-border bg-muted">
               {pl.cover && <img src={pl.cover} alt={pl.name} loading="lazy" className="w-full h-full object-cover" />}
             </div>
-            <p className="text-sm font-bold mt-2 line-clamp-2">{pl.name}</p>
+            <p className="text-sm font-medium mt-2 line-clamp-2">{pl.name}</p>
           </div>
         ))}
       </div>

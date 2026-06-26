@@ -24,14 +24,14 @@ function Navbar({ onLinkClick, isVisible = true, currentSection }) {
 
   return (
     <nav
-      className={`bg-background border-b-2 border-border sticky top-0 z-50 transition-transform duration-300 ${
+      className={`bg-background border-b border-border sticky top-0 z-50 transition-transform duration-300 ${
         shouldShow ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
       <div className="container mx-auto container-padding py-3 flex justify-between items-center flex-wrap gap-3">
         <a
           href="#home"
-          className="text-2xl font-extrabold border-2 border-border bg-primary text-primary-foreground px-3 py-1 shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+          className="text-2xl font-bold bg-primary text-primary-foreground px-3 py-1 rounded-md shadow-brutal-sm transition-colors hover:bg-[#106EBE]"
           onClick={(e) => {
             e.preventDefault();
             handleLinkClick('Home');
@@ -44,10 +44,10 @@ function Navbar({ onLinkClick, isVisible = true, currentSection }) {
             <li key={item.key}>
               <a
                 href={`#${item.key.toLowerCase()}`}
-                className={`inline-block px-3 py-1.5 border-2 border-border font-bold transition-all ${
+                className={`inline-block px-3 py-1.5 border border-border rounded-md font-medium transition-colors ${
                   currentSection === item.key
                     ? 'bg-primary text-primary-foreground shadow-brutal-sm'
-                    : 'bg-card hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-brutal-sm'
+                    : 'bg-card hover:bg-secondary shadow-brutal-sm'
                 }`}
                 onClick={(e) => {
                   e.preventDefault();

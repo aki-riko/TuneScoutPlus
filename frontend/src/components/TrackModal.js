@@ -115,7 +115,7 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
     >
       <div
         ref={modalRef}
-        className={`bg-card p-8 shadow-brutal border-2 border-border w-full max-w-4xl relative transition-all duration-300 ease-in-out ${
+        className={`bg-card p-8 shadow-brutal border border-border w-full max-w-4xl relative transition-all duration-300 ease-in-out ${
           isVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
         } overflow-y-auto max-h-[90vh]`}
       >
@@ -139,7 +139,7 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
                 requestDownloadSearch(`${track.name} ${track.artist}`);
                 onClose();
               }}
-              className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground border border-border font-bold shadow-brutal-sm transition-all"
               title="跳转到下载页,从国内源搜索这首歌"
             >
               ↓ 在国内源下载这首歌
@@ -219,7 +219,7 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              className="w-full p-2 border-2 border-border resize-none"
+              className="w-full p-2 border border-border resize-none"
               placeholder="写下评论…"
               rows="1"
               maxLength="70"
@@ -227,14 +227,14 @@ const TrackModal = ({ track, isVisible, onClose, modalRef }) => {
             {error && <p className="text-destructive text-sm mt-1">{error}</p>}
             <button
               type="submit"
-              className="mt-2 bg-primary text-primary-foreground px-5 py-2 rounded-full border-2 border-border font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="mt-2 bg-primary text-primary-foreground px-5 py-2 rounded-full border border-border font-bold shadow-brutal-sm transition-all"
             >
               发表评论
             </button>
           </form>
           <div className="space-y-4">
             {comments.map((comment, index) => (
-              <div key={index} className="bg-muted p-4 border-2 border-border">
+              <div key={index} className="bg-muted p-4 border border-border">
                 <p>{comment}</p>
               </div>
             ))}

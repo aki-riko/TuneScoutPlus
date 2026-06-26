@@ -84,7 +84,7 @@ const Videogen = () => {
   const songs = search.data?.songs || [];
   return (
     <div className="max-w-5xl mx-auto pb-32">
-      <h2 className="text-3xl font-extrabold mb-2 inline-block border-2 border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">视频生成 · Videogen</h2>
+      <h2 className="text-3xl font-extrabold mb-2 inline-block border border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">视频生成 · Videogen</h2>
       <p className="text-muted-foreground mb-6 mt-3">把一首歌做成带封面与歌词的 MP4 视频(浏览器逐帧渲染,后端 ffmpeg 合成)。</p>
 
       {/* 选歌 */}
@@ -94,9 +94,9 @@ const Videogen = () => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="搜索要生成视频的歌曲…"
-          className="flex-grow px-4 py-3 border-2 border-border bg-card font-medium shadow-brutal-sm focus:shadow-brutal focus:-translate-x-0.5 focus:-translate-y-0.5 outline-none transition-all"
+          className="flex-grow px-4 py-3 border border-border bg-card font-medium shadow-brutal-sm focus:shadow-brutal focus:-translate-x-0.5 focus:-translate-y-0.5 outline-none transition-all"
         />
-        <button type="submit" className="px-6 py-3 border-2 border-border bg-primary text-primary-foreground font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">搜索</button>
+        <button type="submit" className="px-6 py-3 border border-border bg-primary text-primary-foreground font-bold shadow-brutal-sm transition-all">搜索</button>
       </form>
 
       {search.isLoading && <p className="text-muted-foreground font-bold">搜索中…</p>}
@@ -105,10 +105,10 @@ const Videogen = () => {
           <div
             key={`${song.source}-${song.id}-${idx}`}
             onClick={() => setSelected(song)}
-            className={`flex items-center gap-3 p-3 border-2 border-border cursor-pointer transition-all ${
+            className={`flex items-center gap-3 p-3 border border-border cursor-pointer transition-all ${
               selected && selected.id === song.id && selected.source === song.source
                 ? 'bg-primary text-primary-foreground shadow-brutal'
-                : 'bg-card shadow-brutal-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
+                : 'bg-card shadow-brutal-sm'
             }`}
           >
             <div className="flex-grow min-w-0">
@@ -122,12 +122,12 @@ const Videogen = () => {
 
       {/* 生成控制 */}
       {selected && (
-        <div className="border-2 border-border bg-card shadow-brutal p-5 mb-6">
+        <div className="border border-border bg-card shadow-brutal p-5 mb-6">
           <p className="font-bold mb-3">已选:{selected.name} — {selected.artist}</p>
           <button
             onClick={startRender}
             disabled={phase === 'rendering'}
-            className="px-6 py-3 border-2 border-border bg-primary text-primary-foreground font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 disabled:pointer-events-none"
+            className="px-6 py-3 border border-border bg-primary text-primary-foreground font-bold shadow-brutal-sm transition-all disabled:opacity-50 disabled:pointer-events-none"
           >
             {phase === 'rendering' ? '渲染中…' : '🎬 生成视频'}
           </button>
@@ -136,7 +136,7 @@ const Videogen = () => {
             <div className="mt-4">
               <p className="font-bold">{progress.title}</p>
               <p className="text-sm text-muted-foreground mb-2">{progress.desc}</p>
-              <div className="w-full h-5 border-2 border-border bg-muted">
+              <div className="w-full h-5 border border-border bg-muted">
                 <div className="h-full bg-primary transition-all" style={{ width: `${progress.pct}%` }} />
               </div>
             </div>
@@ -147,12 +147,12 @@ const Videogen = () => {
           {phase === 'done' && result && (
             <div className="mt-4">
               <p className="font-bold text-success mb-2">✓ 生成成功!</p>
-              <a href={result.url} download={result.filename} className="inline-block px-6 py-3 border-2 border-border bg-success text-success-foreground font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none no-underline">↓ 下载视频</a>
+              <a href={result.url} download={result.filename} className="inline-block px-6 py-3 border border-border bg-success text-success-foreground font-bold shadow-brutal-sm transition-all no-underline">↓ 下载视频</a>
             </div>
           )}
 
           {/* 渲染预览 */}
-          <div className={`mt-4 border-2 border-border bg-black ${phase === 'idle' ? 'hidden' : ''}`} style={{ aspectRatio: '16/9' }}>
+          <div className={`mt-4 border border-border bg-black ${phase === 'idle' ? 'hidden' : ''}`} style={{ aspectRatio: '16/9' }}>
             <canvas ref={previewRef} className="w-full h-full object-contain" />
           </div>
         </div>

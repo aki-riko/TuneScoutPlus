@@ -36,7 +36,7 @@ const Artists = () => {
   const songs = state.data?.songs || [];
   return (
     <div className="max-w-5xl mx-auto pb-32">
-      <h1 className="text-4xl font-extrabold mb-2 inline-block border-2 border-border bg-primary text-primary-foreground px-4 py-1 shadow-brutal">
+      <h1 className="text-4xl font-semibold mb-2 text-foreground">
         艺人
       </h1>
       <p className="text-muted-foreground mb-6 mt-3">输入歌手名,查看 TA 的歌曲(国内多源)。</p>
@@ -47,14 +47,14 @@ const Artists = () => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="输入歌手名,如 周杰伦…"
-          className="flex-grow px-4 py-3 border-2 border-border bg-card font-medium shadow-brutal-sm focus:shadow-brutal focus:-translate-x-0.5 focus:-translate-y-0.5 outline-none transition-all"
+          className="flex-grow px-4 py-3 border border-border rounded-md bg-card font-medium shadow-brutal-sm focus:shadow-brutal outline-none transition-shadow"
         />
-        <button type="submit" className="px-6 py-3 border-2 border-border bg-primary text-primary-foreground font-bold shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+        <button type="submit" className="px-6 py-3 border border-border rounded-md bg-primary text-primary-foreground font-semibold shadow-brutal-sm transition-colors hover:bg-[#106EBE]">
           搜索
         </button>
       </form>
 
-      {state.isLoading && <p className="text-muted-foreground font-bold">搜索中…</p>}
+      {state.isLoading && <p className="text-muted-foreground font-medium">搜索中…</p>}
       {query && !state.isLoading && songs.length === 0 && <p className="text-muted-foreground">没有找到该歌手的歌曲。</p>}
 
       <div className="space-y-2">
@@ -72,13 +72,13 @@ const Artists = () => {
 
       {lyric && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={() => setLyric(null)}>
-          <div className="bg-card border-2 border-border shadow-brutal-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-card border border-border rounded-lg shadow-brutal-lg max-w-lg w-full max-h-[70vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h3 className="text-xl font-bold">{lyric.song.name}</h3>
+                <h3 className="text-xl font-semibold">{lyric.song.name}</h3>
                 <p className="text-muted-foreground text-sm">{lyric.song.artist}</p>
               </div>
-              <button onClick={() => setLyric(null)} className="font-bold text-2xl leading-none hover:text-primary">×</button>
+              <button onClick={() => setLyric(null)} className="font-bold text-2xl leading-none hover:text-primary transition-colors">×</button>
             </div>
             <pre className="whitespace-pre-wrap text-foreground text-sm font-sans">{lyric.text}</pre>
           </div>
