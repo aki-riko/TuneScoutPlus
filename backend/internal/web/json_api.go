@@ -12,7 +12,11 @@ import (
 
 // RegisterJSONAPIRoutes 注册供 React 前端使用的纯 JSON 接口,挂在 /api/v1 下。
 // 与原有 /music/* 的 HTMX(HTML 片段)路由并存,互不影响。
-func RegisterJSONAPIRoutes(r *gin.Engine) {
+//
+// 安全模型:只读接口(搜索/歌单/专辑/歌词/推荐)公开,与原版一致;
+// 改写状态的敏感接口(扫码登录写 cookie、清除 cookie)挂到管理员鉴权之后,
+// 与原版 configAPI 同一套鉴权(opts.DisableAuth 时放行,用于本机桌面模式)。
+func RegisterJSONAPIRoutes(r *gin.Engine, opts StartOptions) {
 	api := r.Group("/api/v1")
 
 	api.GET("/healthz", func(c *gin.Context) {
@@ -133,16 +137,23 @@ func RegisterJSONAPIRoutes(r *gin.Engine) {
 		c.JSON(200, out)
 	})
 
-	registerLoginAndCookieRoutes(api)
-}
-
-// registerLoginAndCookieRoutes 注册二维码登录与 Cookie 管理(本地自用,无鉴权,
-// 与 configAPI 下需管理员登录的同名能力区分;供前端「设置」面板直接调用)。
-func registerLoginAndCookieRoutes(api *gin.RouterGroup) {
-	// 支持二维码登录的源
+	// 支持二维码登录的源(只读,公开)
 	api.GET("/qr_login/sources", func(c *gin.Context) {
 		c.JSON(200, gin.H{"sources": core.GetQRLoginSourceNames()})
 	})
+
+	// 敏感接口(写/清 cookie、触发登录)挂到管理员鉴权之后。
+	// DisableAuth(桌面/本机模式)时放行,与原版 configAPI 行为一致。
+	secure := api.Group("")
+	if !opts.DisableAuth {
+		secure.Use(authRequired(core.GetWebAuthSettings))
+	}
+	registerLoginAndCookieRoutes(secure)
+}
+
+// registerLoginAndCookieRoutes 注册二维码登录与 Cookie 管理。
+// 这些接口会改写登录态或读取登录状态,必须在鉴权之后(由调用方决定是否套 authRequired)。
+func registerLoginAndCookieRoutes(api *gin.RouterGroup) {
 
 	// 创建二维码登录会话
 	api.POST("/qr_login/:source", func(c *gin.Context) {

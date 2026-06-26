@@ -9,6 +9,8 @@ import {
   clearCookie,
   getLocalMusic,
   deleteLocalMusic,
+  adminSetupUrl,
+  adminLoginUrl,
 } from '../services/musicdl';
 
 const SOURCE_LABELS = {
@@ -98,8 +100,12 @@ const QRLoginCard = ({ source, loggedIn, onLoggedIn }) => {
 
 const Settings = () => {
   const qrSources = useQuery(['qr-sources'], getQRSources);
-  const cookieStatus = useQuery(['cookie-status'], getCookieStatus);
+  const cookieStatus = useQuery(['cookie-status'], getCookieStatus, {
+    retry: (count, err) => err?.name !== 'AuthRequiredError' && count < 2,
+  });
   const localMusic = useQuery(['local-music'], () => getLocalMusic({ limit: 200 }));
+
+  const authErr = cookieStatus.error?.name === 'AuthRequiredError' ? cookieStatus.error : null;
 
   const handleLoggedIn = () => {
     cookieStatus.refetch();
@@ -123,6 +129,24 @@ const Settings = () => {
     <div className="max-w-5xl mx-auto pb-32">
       <h2 className="text-3xl font-bold text-primary mb-2">设置 · Settings</h2>
       <p className="text-gray-400 mb-6">扫码登录各平台以解锁会员/无损音质,管理已下载的本地音乐。</p>
+
+      {authErr && (
+        <div className="mb-6 p-4 rounded-lg bg-yellow-900/40 border border-yellow-700 text-yellow-200">
+          <p className="font-semibold mb-1">需要管理员身份</p>
+          <p className="text-sm mb-2">
+            扫码登录与 Cookie 管理属于敏感操作,后端已要求管理员鉴权。请先
+            {authErr.setupRequired ? '初始化管理员账号' : '登录'}后再使用本页功能。
+          </p>
+          <a
+            href={authErr.setupRequired ? adminSetupUrl : adminLoginUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block px-3 py-1.5 rounded bg-yellow-700 text-white text-sm hover:bg-yellow-600 transition"
+          >
+            前往{authErr.setupRequired ? '初始化' : '登录'}页 ↗
+          </a>
+        </div>
+      )}
 
       <section className="mb-10">
         <h3 className="text-xl font-semibold text-white mb-4">账号登录</h3>

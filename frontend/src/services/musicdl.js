@@ -7,6 +7,9 @@ const API_BASE = process.env.REACT_APP_MUSICDL_API || 'http://127.0.0.1:8080';
 const client = axios.create({
   baseURL: API_BASE,
   timeout: 30000,
+  // 敏感接口(登录/cookie)需携带管理员鉴权 cookie。
+  // 注意:跨域携带 credentials 时后端 CORS 不能用通配 Origin(见后端 corsMiddleware 说明)。
+  withCredentials: true,
 });
 
 // 多源搜索。type: song | playlist | album
@@ -82,6 +85,31 @@ export const getDownloadUrl = (song) =>
 
 export const apiBase = API_BASE;
 
+// 后端管理员登录/初始化页(原版 HTMX 页面)。敏感接口需先在此登录。
+export const adminSetupUrl = `${API_BASE}/music/setup`;
+export const adminLoginUrl = `${API_BASE}/music/login`;
+
+// 标记鉴权错误,供 Settings 页给出清晰引导而非笼统“失败”。
+export class AuthRequiredError extends Error {
+  constructor(setupRequired) {
+    super(setupRequired ? '需要先初始化管理员账号' : '需要先登录管理员账号');
+    this.name = 'AuthRequiredError';
+    this.setupRequired = !!setupRequired;
+  }
+}
+
+// 把敏感接口的 401 统一转成 AuthRequiredError
+const callSecure = async (fn) => {
+  try {
+    return await fn();
+  } catch (e) {
+    if (e?.response?.status === 401) {
+      throw new AuthRequiredError(e.response.data?.setupRequired);
+    }
+    throw e;
+  }
+};
+
 // ===== 二维码登录 / Cookie 管理 / 本地音乐 =====
 
 export const getQRSources = async () => {
@@ -90,28 +118,32 @@ export const getQRSources = async () => {
 };
 
 // 创建二维码登录会话 → { source, key, url, image_url }
-export const createQRLogin = async (source) => {
-  const { data } = await client.post(`/api/v1/qr_login/${encodeURIComponent(source)}`);
-  return data;
-};
+export const createQRLogin = async (source) =>
+  callSecure(async () => {
+    const { data } = await client.post(`/api/v1/qr_login/${encodeURIComponent(source)}`);
+    return data;
+  });
 
 // 轮询登录状态 → { status, cookie, ... }  status: waiting/scanned/success/expired/failed
-export const checkQRLogin = async (source, key) => {
-  const { data } = await client.get(`/api/v1/qr_login/${encodeURIComponent(source)}?key=${encodeURIComponent(key)}`);
-  return data;
-};
+export const checkQRLogin = async (source, key) =>
+  callSecure(async () => {
+    const { data } = await client.get(`/api/v1/qr_login/${encodeURIComponent(source)}?key=${encodeURIComponent(key)}`);
+    return data;
+  });
 
 // 各源登录状态 → { logged_in: { netease:true, ... } }
-export const getCookieStatus = async () => {
-  const { data } = await client.get('/api/v1/cookies');
-  return data.logged_in || {};
-};
+export const getCookieStatus = async () =>
+  callSecure(async () => {
+    const { data } = await client.get('/api/v1/cookies');
+    return data.logged_in || {};
+  });
 
 // 退出某源登录
-export const clearCookie = async (source) => {
-  const { data } = await client.delete(`/api/v1/cookies/${encodeURIComponent(source)}`);
-  return data;
-};
+export const clearCookie = async (source) =>
+  callSecure(async () => {
+    const { data } = await client.delete(`/api/v1/cookies/${encodeURIComponent(source)}`);
+    return data;
+  });
 
 // 本地音乐列表(沿用 /music/local_music)
 export const getLocalMusic = async ({ offset = 0, limit = 100, refresh = false } = {}) => {

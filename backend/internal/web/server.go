@@ -77,11 +77,19 @@ func searchPlaceholderForType(searchType string) string {
 func corsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := c.Request.Method
-		c.Header("Access-Control-Allow-Origin", "*")
+		// 带 credentials(鉴权 cookie)的请求,浏览器禁止 Allow-Origin 为通配 "*",
+		// 必须回显具体来源。无 Origin(同源/非浏览器)时回退 "*" 且不允许 credentials。
+		origin := c.GetHeader("Origin")
+		if origin != "" {
+			c.Header("Access-Control-Allow-Origin", origin)
+			c.Header("Vary", "Origin")
+			c.Header("Access-Control-Allow-Credentials", "true")
+		} else {
+			c.Header("Access-Control-Allow-Origin", "*")
+		}
 		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
 		c.Header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
 		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Cache-Control, Content-Language, Content-Type")
-		c.Header("Access-Control-Allow-Credentials", "true")
 		if method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)
 		}
@@ -452,7 +460,8 @@ func StartWithOptions(port string, opts StartOptions) {
 	RegisterUpdateRoutes(api)
 
 	// TuneScout+ 新增:供 React 前端使用的纯 JSON 接口(/api/v1),与 /music HTMX 路由并存。
-	RegisterJSONAPIRoutes(r)
+	// 敏感接口(登录/cookie)复用同一套管理员鉴权。
+	RegisterJSONAPIRoutes(r, opts)
 
 	listenAddr := opts.ListenHost + ":" + port
 	listener, err := net.Listen("tcp", listenAddr)
