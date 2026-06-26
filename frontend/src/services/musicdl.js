@@ -62,6 +62,17 @@ export const getPlaylistDetail = async (id, source) => {
   return data; // { songs, type, source, link, error }
 };
 
+// 验音质:对真实下载源发探测请求,拿真实大小与码率(沿用 /music/inspect)
+export const inspectQuality = async (song) => {
+  const params = new URLSearchParams();
+  params.set('id', song.id);
+  params.set('source', song.source);
+  if (song.duration) params.set('duration', song.duration);
+  if (song.extra) params.set('extra', JSON.stringify(song.extra));
+  const { data } = await client.get(`/music/inspect?${params.toString()}`);
+  return data; // { valid, url, size, bitrate }
+};
+
 // 专辑详情(歌曲列表)
 export const getAlbumDetail = async (id, source) => {
   const { data } = await client.get(`/api/v1/album?id=${encodeURIComponent(id)}&source=${encodeURIComponent(source)}`);
