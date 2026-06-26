@@ -432,6 +432,8 @@ func RegisterVideogenRoutes(api *gin.RouterGroup, videoDir string) {
 			return
 		}
 
-		c.JSON(200, gin.H{"url": "/videos/" + outName})
+		// 视频静态资源挂在 RoutePrefix 下(api.Static("/videos", ...) 在 /music 组),
+		// 返回含前缀的绝对路径,任何客户端直接使用都不会 404。
+		c.JSON(200, gin.H{"url": RoutePrefix + "/videos/" + outName})
 	})
 }

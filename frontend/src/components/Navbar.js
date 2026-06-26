@@ -1,6 +1,6 @@
 import React from 'react';
 
-const sections = ['Home', 'Trending', 'Artists', 'Discover', 'Download', 'Settings', 'FAQ'];
+const sections = ['Home', 'Trending', 'Artists', 'Discover', 'Download', 'Videogen', 'Settings', 'FAQ'];
 
 function Navbar({ onLinkClick, isVisible = true, currentSection }) {
   const shouldShow = isVisible !== false;
