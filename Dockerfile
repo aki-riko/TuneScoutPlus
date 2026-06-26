@@ -36,5 +36,5 @@ WORKDIR /home/appuser/
 COPY --from=builder /app/music-dl .
 RUN chown -R appuser:appuser /home/appuser/
 USER appuser
-EXPOSE 8080
-CMD ["./music-dl", "web", "--port", "8080", "--no-browser"]
+EXPOSE 8329
+CMD ["./music-dl", "web", "--port", "8329", "--no-browser"]

@@ -36,7 +36,8 @@ TuneScout+/
 
 ```bash
 docker compose up -d --build      # 构建并启动
-# 访问 http://<主机>:8080
+docker compose up -d --build      # 构建并启动
+# 访问 http://<主机>:8329
 ```
 
 镜像三阶段构建(Node 构建前端 → Go 编译并 `go:embed` 嵌入前端产物 → Alpine + ffmpeg 运行)。
@@ -46,11 +47,11 @@ docker compose up -d --build      # 构建并启动
 
 ## 开发运行
 
-**后端**(默认 :8080):
+**后端**(示例用 :8329):
 
 ```bash
 cd backend
-go run ./cmd/music-dl web --port 8080
+go run ./cmd/music-dl web --port 8329
 ```
 
 **前端**(默认 :3000):
